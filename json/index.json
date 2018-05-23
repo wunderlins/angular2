@@ -1,0 +1,38 @@
+{
+	"nodes": [{
+	"id": 0,
+	"name": "root",
+	"parent": -1,
+	"description": "",
+	"numChildren": 3,
+	"children": [
+
+{
+				 "id": 11,
+				 "name": "Node 1",
+				 "parent": 0,
+				 "description": "",
+				 "numChildren": 0,
+				 "children": []
+			  },
+				 {
+				 "id": 12,
+				 "name": "Node 2",
+				 "parent": 0,
+				 "description": "",
+				 "numChildren": 0,
+				 "children": []
+				 },
+	
+				 {
+				 "id": 13,
+				 "name": "Node 3",
+				 "parent": 0,
+				 "description": "",
+				 "numChildren": 0,
+				 "children": []
+				 }
+				 
+				 ]
+	}]
+}
