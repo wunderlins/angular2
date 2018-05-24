@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo } from '../todo';
+import { NotesService } from '../notes.service';
 
 @Component({
   selector: 'app-notes',
@@ -24,11 +25,16 @@ export class NotesComponent implements OnInit {
     console.log(note.name);
   }
   
-  constructor() {
+  constructor(private notesService: NotesService) {
+  }
+  
+  getHeroes(): void {
+    this.parent = this.notesService.getNotes();
+    
   }
 
   ngOnInit() {
-    this.dummyData();
+    this.getHeroes();
   }
 
 }

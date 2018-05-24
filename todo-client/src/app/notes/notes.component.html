@@ -2,5 +2,6 @@
 
 <ul>
 	<li *ngFor="let note of parent.children" 
-      (click)="onSelect(note)">{{note.name}}, numChildren={{note.numChildren}} parent={{note.parent}}, dirty={{note.dirty}}</li>
+      (click)="onSelect(note)">{{note.name}}, numChildren={{note.numChildren}} 
+                               parent={{note.parent}}, dirty={{note.dirty}}</li>
 </ul>

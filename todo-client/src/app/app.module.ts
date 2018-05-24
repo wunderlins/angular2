@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { NotesComponent } from './notes/notes.component';
 import { ConsoleComponent } from './console/console.component';
+import { NotesService } from './notes.service';
 
 
 @NgModule({
@@ -16,7 +17,7 @@ import { ConsoleComponent } from './console/console.component';
   imports: [
     BrowserModule
   ],
-  providers: [],
+  providers: [NotesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
