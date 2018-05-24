@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Todo } from './todo';
-
+import { Observable} from 'rxjs';
+import { of } from 'rxjs/observable/of';
 
 @Injectable()
 export class NotesService {
@@ -18,8 +19,8 @@ export class NotesService {
     return n;  
   }
   
-  getNotes(): Todo {
-   return this.dummyData();
+  getNotes(): Observable<Todo> {
+    return of(this.dummyData());
   }
 
 }
