@@ -1,7 +1,7 @@
 <h2>Notes</h2>
 
 <ul>
-	<li *ngFor="let note of parent.children" 
+	<li *ngFor="let note of parent" 
       (click)="onSelect(note)">{{note.name}}, numChildren={{note.numChildren}} 
                                parent={{note.parent}}, dirty={{note.dirty}}</li>
 </ul>
