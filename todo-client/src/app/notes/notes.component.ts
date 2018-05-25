@@ -31,7 +31,7 @@ export class NotesComponent implements OnInit {
   getHeroes(): void {
     //this.parent = this.notesService.getNotes();
     this.notesService.getNotes()
-      .subscribe(parent => this.parent = parent);
+      .subscribe(parent => {this.parent = parent; console.log(parent)});
   }
 
   ngOnInit() {
