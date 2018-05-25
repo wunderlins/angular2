@@ -1,9 +1,10 @@
 <h2>Notes</h2>
 
-<div *ngIf="parent">{{parent.name}}</div>
+<div *ngIf="parent">{{parent.name}}
 
 <ul>
-	<!-- li *ngFor="let note of parent" 
+	<li *ngFor="let note of parent.children" 
       (click)="onSelect(note)">{{note.name}}, numChildren={{note.numChildren}} 
-                               parent={{note.parent}}, dirty={{note.dirty}}</li -->
+                               parent={{note.parent}}, dirty={{note.dirty}}</li>
 </ul>
+</div>
