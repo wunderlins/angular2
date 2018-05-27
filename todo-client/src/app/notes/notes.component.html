@@ -6,9 +6,11 @@
 <div *ngIf="parent">{{parent.name}}
 
 <ul>
-	<li *ngFor="let note of parent.children" 
-	  [class.selected]="note === selected"
-      (click)="onSelect(note)">{{note.name}}, numChildren={{note.numChildren}} 
+	<li *ngFor="let note of parent.children"
+	  class="" 
+	  [class.selected]="note === selected" 
+	  [class.collapsed]="note.numChildren > 0" 
+      (click)="onSelect(note, $event)">{{note.name}}, numChildren={{note.numChildren}} 
                                parent={{note.parent}}, dirty={{note.dirty}}</li>
 </ul>
 </div>

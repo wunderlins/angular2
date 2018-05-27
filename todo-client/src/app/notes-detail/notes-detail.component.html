@@ -1,6 +1,23 @@
 <div *ngIf="note">
 
-<label for="id">id</label>
-<input type="number" id="id" [(ngModel)]="note.id" placeholder="id">
-
+	<div>
+		<label for="id">id</label>
+		<input type="number" id="id" [(ngModel)]="note.id" placeholder="id">
+	</div>
+	<div>
+		<label for="name">name</label>
+		<input type="text" id="name" [(ngModel)]="note.name" placeholder="name">
+	</div>
+	<div>
+		<label for="description">description</label>
+		<textarea id="description" [(ngModel)]="note.description"></textarea>
+	</div>
+	<div>
+		<label for="parent">parent</label>
+		<input type="number" id="parent" [(ngModel)]="note.parent" placeholder="parent">
+	</div>
+	<div>
+		<label for="numChildren">numChildren</label>
+		<input type="number" id="numChildren" [(ngModel)]="note.numChildren" placeholder="numChildren">
+	</div>
 </div>

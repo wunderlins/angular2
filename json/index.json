@@ -11,7 +11,7 @@
 				 "id": 11,
 				 "name": "Node 1",
 				 "parent": 0,
-				 "description": "",
+				 "description": "some text",
 				 "numChildren": 0,
 				 "children": []
 			  },
@@ -29,7 +29,7 @@
 				 "name": "Node 3",
 				 "parent": 0,
 				 "description": "",
-				 "numChildren": 0,
+				 "numChildren": 1,
 				 "children": []
 				 }
 				 
