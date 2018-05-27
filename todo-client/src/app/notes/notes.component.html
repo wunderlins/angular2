@@ -1,16 +1,16 @@
-<h2>Notes</h2>
+<h2>
+	<fa [name]="'book'"></fa>
+	Notes
+</h2>
 
 <div *ngIf="parent">{{parent.name}}
 
 <ul>
 	<li *ngFor="let note of parent.children" 
+	  [class.selected]="note === selected"
       (click)="onSelect(note)">{{note.name}}, numChildren={{note.numChildren}} 
                                parent={{note.parent}}, dirty={{note.dirty}}</li>
 </ul>
 </div>
 
-<div *ngIf="selected">
-	Selected Note: {{selected.name}}
-	
-	<app-notes-detail [note]="selected"></app-notes-detail>
-</div>
+<app-notes-detail [note]="selected"></app-notes-detail>

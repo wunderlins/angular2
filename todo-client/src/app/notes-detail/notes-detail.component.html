@@ -1,3 +1,6 @@
-<p>
-  notes-detail works!
-</p>
+<div *ngIf="note">
+
+<label for="id">id</label>
+<input type="number" id="id" [(ngModel)]="note.id" placeholder="id">
+
+</div>
