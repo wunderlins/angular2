@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo } from '../todo';
 import { NotesService } from '../notes.service';
+//import { ConsoleComponent } from '../console/console.component';
 
 @Component({
   selector: 'app-notes',
@@ -10,6 +11,7 @@ import { NotesService } from '../notes.service';
 export class NotesComponent implements OnInit {
   
   parent: Todo;
+  selected: Todo;
   
   private dummyData(): void {
     let n = new Todo(0, "Root");
@@ -22,20 +24,21 @@ export class NotesComponent implements OnInit {
   }
   
   public onSelect(note: Todo): void {
+    this.selected = note;
     console.log(note.name);
   }
   
   constructor(private notesService: NotesService) {
   }
   
-  getHeroes(): void {
+  getRoot(): void {
     //this.parent = this.notesService.getNotes();
-    this.notesService.getNotes()
+    this.notesService.getRoot()
       .subscribe(parent => {this.parent = parent; console.log(parent)});
   }
 
   ngOnInit() {
-    this.getHeroes();
+    this.getRoot();
   }
 
 }

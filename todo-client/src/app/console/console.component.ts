@@ -5,6 +5,7 @@ import { Component, OnInit, Input } from '@angular/core';
   templateUrl: './console.component.html',
   styleUrls: ['./console.component.css']
 })
+  
 export class ConsoleComponent implements OnInit {
 
   constructor() { }
@@ -13,7 +14,7 @@ export class ConsoleComponent implements OnInit {
   }
   
   log(message: string): void {
-    document.getElementById("logConsole").setAttribute("value", "\n" + message);
+    document.getElementById('logConsole').setAttribute('value', '\n' + message);
   }
 
 }

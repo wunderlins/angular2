@@ -8,3 +8,9 @@
                                parent={{note.parent}}, dirty={{note.dirty}}</li>
 </ul>
 </div>
+
+<div *ngIf="selected">
+	Selected Note: {{selected.name}}
+	
+	<app-notes-detail [note]="selected"></app-notes-detail>
+</div>

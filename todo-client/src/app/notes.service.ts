@@ -15,7 +15,7 @@ const httpOptions = {
 @Injectable()
 export class NotesService {
   
-  private url = 'http://localhost:3000/nodes/0';
+  private rootUrl = 'http://localhost:3000/nodes/0';
 
   constructor(private http: HttpClient) { }
   
@@ -30,9 +30,9 @@ export class NotesService {
     return n;  
   }
   
-  getNotes(): Observable<Todo> {
+  getRoot(): Observable<Todo> {
     //return of(this.dummyData());
-    let root = this.http.get<Todo>(this.url);
+    let root = this.http.get<Todo>(this.rootUrl);
     console.log(root);
     return root;
   }
