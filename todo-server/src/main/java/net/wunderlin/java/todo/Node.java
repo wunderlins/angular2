@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * Store hirarchial data in sqlite
@@ -93,7 +94,8 @@ public class Node extends Database {
 	 * @see #hasChildren()
 	 * @see #childrenLoaded
 	 */
-	@JsonIgnore
+	/* @JsonIgnore */
+	@JsonSerialize(using = CustomChildrenSerializer.class)
 	private ArrayList<Node> children;
 	
 	/**
@@ -548,7 +550,7 @@ public class Node extends Database {
 	 * @see #children
 	 */
 	public ArrayList<Node> getChildren(boolean useCache) throws SQLException {
-		
+		//System.out.println("Fetching children");
 		if (childrenLoaded && useCache)
 			return children;
 		
