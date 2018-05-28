@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
@@ -94,10 +95,14 @@ public class Node extends Database {
 	 * @see #hasChildren()
 	 * @see #childrenLoaded
 	 */
-	/* @JsonIgnore */
-	@JsonSerialize(using = CustomChildrenSerializer.class)
+	@JsonIgnore
+	/**
+	 * due to the fact that listing child id's is to costly when generating, we disable this property
+	 * @JsonProperty("childrenIds")
+	 * @JsonSerialize(using = CustomChildrenSerializer.class)
+	 */
 	private ArrayList<Node> children;
-	
+
 	/**
 	 * state of the children
 	 * <p>
@@ -119,6 +124,18 @@ public class Node extends Database {
 	 * @see #setRootNodeName(String)
 	 */
 	private static String rootNodeName = "Root";
+	
+	/**
+	 * Fake children property for JSON
+	 */
+	@JsonProperty("children")
+	public final int[] JSONchildren = {};
+	
+	/**
+	 * Fake Dirty Attribute for JSON
+	 */
+	@JsonProperty("dirty")
+	public final boolean JSONdirty = false;
 	
 	/**
 	 * Set the display name of the Root node
