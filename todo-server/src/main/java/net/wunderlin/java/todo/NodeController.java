@@ -6,10 +6,12 @@ import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+// https://spring.io/guides/tutorials/bookmarks/
 @RestController
 @RequestMapping("/api")
 public class NodeController {
@@ -36,7 +38,7 @@ public class NodeController {
      * @param id Optional, defaults to 0 which is the Root node
      * @return
      */
-    @RequestMapping({"/node","/node/{id}"})
+    @GetMapping({"/node","/node/{id}"})
     public Node node(@PathVariable Optional<Integer> id) {
     	// check if optional parameter is present. if not, fetch the Root node.
     	int requestId = 0;  
@@ -58,7 +60,7 @@ public class NodeController {
      * @return
      * @throws SQLException 
      */
-    @RequestMapping({"/node/children","/node/{id}/children"})
+    @GetMapping({"/node/children","/node/{id}/children"})
     public ArrayList<Node> children(@PathVariable Optional<Integer> id) throws SQLException {
     	// check if optional parameter is present. if not, fetch the Root node.
     	int requestId = 0;  
