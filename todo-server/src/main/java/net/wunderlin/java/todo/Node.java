@@ -5,6 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 /**
  * Store hirarchial data in sqlite
  * <p>
@@ -60,6 +64,7 @@ public class Node extends Database {
 	/**
 	 * A reference to the parent node. This points to the parents {@link #id}
 	 */
+	@JsonBackReference
 	private int parent;
 	
 	/**
@@ -88,6 +93,7 @@ public class Node extends Database {
 	 * @see #hasChildren()
 	 * @see #childrenLoaded
 	 */
+	@JsonIgnore
 	private ArrayList<Node> children;
 	
 	/**
@@ -122,24 +128,6 @@ public class Node extends Database {
 	}
 	
 	/**
-	 * create a node object
-	 * <p>
-	 * default to root node. id -1 means the db object does not yet exist. after the first commit, the object's
-	 * id will be updated with the generated database id.
-	 * 
-	 * @see #store()
-	 * @see #insert()
-	 */
-	public Node() {
-		id = -1;
-		name = "";
-		parent = -1;
-		numChildren = 0;
-		children = new ArrayList<>();
-		dirty = true;
-	}
-	
-	/**
 	 * fetch a node object by id
 	 * <p>
 	 * The root nodes id is always 0. If the node can not be found in the database, the returning object will have 
@@ -148,6 +136,7 @@ public class Node extends Database {
 	 * @throws Exception 
 	 */
 	public Node(int id) {
+		//System.out.println("Loading node: " + Integer.toString(id));
 		this.id = 0;
 		this.name = rootNodeName;
 		this.parent = -1;
@@ -176,6 +165,24 @@ public class Node extends Database {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	/**
+	 * create a node object
+	 * <p>
+	 * default to root node. id -1 means the db object does not yet exist. after the first commit, the object's
+	 * id will be updated with the generated database id.
+	 * 
+	 * @see #store()
+	 * @see #insert()
+	 */
+	public Node() {
+		id = -1;
+		name = "";
+		parent = -1;
+		numChildren = 0;
+		children = new ArrayList<>();
+		dirty = true;
 	}
 	
 	/**
