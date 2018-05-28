@@ -4,18 +4,10 @@ import { Observable} from 'rxjs';
 import { of } from 'rxjs/observable/of';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-/*
-const httpOptions = {
-  headers: new HttpHeaders({ 
-    'Access-Control-Allow-Origin':'*'
-  })
-};
-*/
-
 @Injectable()
 export class NotesService {
   
-  private rootUrl = 'http://localhost:3000/nodes/0';
+  private rootUrl = 'http://localhost:8181/api/node/1/children';
 
   constructor(private http: HttpClient) { }
   
@@ -30,11 +22,11 @@ export class NotesService {
     return n;  
   }
   
-  getRoot(): Observable<Todo> {
+  getRoot(): Observable<Todo[]> {
     // return of(this.dummyData());
-    let root = this.http.get<Todo>(this.rootUrl);
-    console.log(root);
-    return root;
+    let nodeList = this.http.get<Todo[]>(this.rootUrl);
+    //console.log(nodeList);
+    return nodeList;
   }
 
 }

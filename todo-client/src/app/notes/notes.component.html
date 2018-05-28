@@ -3,15 +3,15 @@
 	Notes
 </h2>
 
-<div *ngIf="parent">{{parent.name}}
+<div *ngIf="notes">{{notes.length}}
 
 <ul>
-	<li *ngFor="let note of parent.children"
+	<li *ngFor="let note of notes"
 	  class="" 
 	  [class.selected]="note === selected" 
 	  [class.collapsed]="note.numChildren > 0" 
       (click)="onSelect(note, $event)">{{note.name}}, numChildren={{note.numChildren}} 
-                               parent={{note.parent}}, dirty={{note.dirty}}</li>
+                               parent={{note.parentId}}, dirty={{note.dirty}}</li>
 </ul>
 </div>
 

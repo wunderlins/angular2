@@ -10,7 +10,7 @@ import { NotesService } from '../notes.service';
 })
 export class NotesComponent implements OnInit {
   
-  parent: Todo;
+  notes: Todo[];
   selected: Todo;
   
   private dummyData(): void {
@@ -20,7 +20,7 @@ export class NotesComponent implements OnInit {
     n.appendChild(new Todo(13, 'note 3', ''));
     n.appendChild(new Todo(14, 'note 4', ''));
     n.appendChild(new Todo(15, 'note 5', '', 0, [new Todo(151, 'note 5.1', '', 15, [], 0)], 1));
-    this.parent = n;
+    this.notes = n.children;
   }
   
   public onSelect(note: Todo, event: any): void {
@@ -35,8 +35,9 @@ export class NotesComponent implements OnInit {
   getRoot(): void {
     // this.parent = this.notesService.getNotes();
     this.notesService.getRoot()
-      .subscribe(parent => {
-        this.parent = parent; console.log(parent);
+      .subscribe(notes => {
+        this.notes = notes; 
+        console.log(notes);
       });
   }
 
