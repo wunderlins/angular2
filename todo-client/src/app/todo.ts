@@ -1,6 +1,6 @@
 export class Todo {
   private childrenLoaded: boolean = false;
-  private _dirty: boolean = true;
+  private _dirty: boolean = false;
   
   private _id: number = -1;
   private _name: string;
@@ -18,6 +18,7 @@ export class Todo {
     this._parent = parent;
     this._children = children;
     this._numChildren = numChildren;
+    this._dirty = true;
   }
   
   appendChild(child: Todo) {

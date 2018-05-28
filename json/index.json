@@ -13,7 +13,8 @@
 				 "parent": 0,
 				 "description": "some text",
 				 "numChildren": 0,
-				 "children": []
+				 "children": [],
+				 "dirty": false
 			  },
 				 {
 				 "id": 12,
@@ -21,7 +22,8 @@
 				 "parent": 0,
 				 "description": "",
 				 "numChildren": 0,
-				 "children": []
+				 "children": [],
+				 "dirty": false
 				 },
 	
 				 {
@@ -30,7 +32,8 @@
 				 "parent": 0,
 				 "description": "",
 				 "numChildren": 1,
-				 "children": []
+				 "children": [],
+				 "dirty": false
 				 }
 				 
 				 ]
