@@ -35,7 +35,9 @@ export class NotesComponent implements OnInit {
   getRoot(): void {
     // this.parent = this.notesService.getNotes();
     this.notesService.getRoot()
-      .subscribe(parent => {this.parent = parent; console.log(parent)});
+      .subscribe(parent => {
+        this.parent = parent; console.log(parent);
+      });
   }
 
   ngOnInit() {

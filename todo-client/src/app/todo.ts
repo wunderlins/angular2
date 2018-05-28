@@ -1,16 +1,16 @@
 export class Todo {
-  private childrenLoaded: boolean = false;
-  private _dirty: boolean = false;
+  private childrenLoaded = false;
+  private _dirty = false;
   
-  private _id: number = -1;
+  private _id = -1;
   private _name: string;
   private _description: string;
-  private _parent: number = 0;
+  private _parent = 0;
   private _children: Todo[];
-  private _numChildren: number = 0;
+  private _numChildren = 0;
   
   constructor(
-    id, name, description = "", parent = 0, children = [], numChildren = 0
+    id, name, description = '', parent = 0, children = [], numChildren = 0
   ) {
     this._id = id;
     this._name = name;
@@ -22,7 +22,7 @@ export class Todo {
   }
   
   appendChild(child: Todo) {
-    if (child._parent != this._id) {
+    if (child._parent !== this._id) {
       child._parent = this._id;
       child._dirty = true;
     }
