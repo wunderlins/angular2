@@ -7,7 +7,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Injectable()
 export class NotesService {
   
-  private rootUrl = 'http://localhost:8181/api/node/1/children';
+  private rootUrl = 'http://localhost:8181/api/node/';
+
 
   constructor(private http: HttpClient) { }
   
@@ -24,9 +25,25 @@ export class NotesService {
   
   getRoot(): Observable<Todo[]> {
     // return of(this.dummyData());
-    let nodeList = this.http.get<Todo[]>(this.rootUrl);
+    let nodeList = this.http.get<Todo[]>(this.rootUrl + '0/children');
     //console.log(nodeList);
     return nodeList;
+  }
+  
+  getChildren(id: number): Todo[] {
+    let ret = <Todo>[;
+    let children = this.http.get<Todo[]>(this.rootUrl + id + '/children')
+      .subscribe(notes => {
+        notes.forEach((v, k) => {
+          // console.log(`${k}: ${v}`);
+          let n: Todo = new Todo(v.id, v.name, v.description, v.parentId, [], v.numChildren, false);
+          ret.push(n);
+          // console.log(n);
+        });
+        return notes;
+     });
+    //console.log(ret);
+    return ret;
   }
 
 }

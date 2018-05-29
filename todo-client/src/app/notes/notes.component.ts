@@ -32,6 +32,10 @@ export class NotesComponent implements OnInit {
   constructor(private notesService: NotesService) {
   }
   
+  getChildren() {
+    this.notesService.getChildren(1);
+  }
+  
   getRoot(): void {
     // this.parent = this.notesService.getNotes();
     this.notesService.getRoot()
