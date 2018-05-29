@@ -3,12 +3,12 @@ import { Todo } from './todo';
 import { Observable} from 'rxjs';
 import { of } from 'rxjs/observable/of';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from './../environments/environment';
 
 @Injectable()
 export class NotesService {
   
-  private rootUrl = 'http://localhost:8181/api/node/';
-
+  private rootUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
   
@@ -31,7 +31,7 @@ export class NotesService {
   }
   
   getChildren(id: number): Todo[] {
-    let ret = <Todo>[;
+    let ret = <Todo[]>[];
     let children = this.http.get<Todo[]>(this.rootUrl + id + '/children')
       .subscribe(notes => {
         notes.forEach((v, k) => {
@@ -42,7 +42,7 @@ export class NotesService {
         });
         return notes;
      });
-    //console.log(ret);
+    console.log(ret);
     return ret;
   }
 
