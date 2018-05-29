@@ -10,15 +10,15 @@ export class Todo {
   private _numChildren = 0;
   
   constructor(
-    id, name, description = '', parentId = 0, children = [], numChildren = 0, dirty = false
+    Pid, Pname, Pdescription = '', PparentId = 0, Pchildren = [], PnumChildren = 0, Pdirty = false
   ) {
-    this._id = id;
-    this._name = name;
-    this._description = description;
-    this._parentId = parentId;
-    this._children = children;
-    this._numChildren = numChildren;
-    this._dirty = dirty;
+    this._id = Pid;
+    this._name = Pname;
+    this._description = Pdescription;
+    this._parentId = PparentId;
+    this._children = Pchildren;
+    this._numChildren = PnumChildren;
+    this._dirty = Pdirty;
   }
   
   appendChild(child: Todo) {

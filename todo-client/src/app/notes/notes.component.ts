@@ -10,7 +10,7 @@ import { NotesService } from '../notes.service';
 })
 export class NotesComponent implements OnInit {
   
-  notes: Todo[];
+  notes: Todo[] = new Array();
   selected: Todo;
   
   private dummyData(): void {
@@ -36,8 +36,13 @@ export class NotesComponent implements OnInit {
     // this.parent = this.notesService.getNotes();
     this.notesService.getRoot()
       .subscribe(notes => {
-        this.notes = notes; 
         console.log(notes);
+        notes.forEach((v, k) => {
+          console.log(`${k}: ${v}`);
+          let n: Todo = new Todo(v.id, v.name, v.description, v.parentId, [], v.numChildren, false);
+          this.notes.push(n);
+          console.log(n);
+        });
       });
   }
 
