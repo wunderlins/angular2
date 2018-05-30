@@ -1,5 +1,6 @@
 package net.wunderlin.java.todo;
 
+import java.net.URI;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 // https://spring.io/guides/tutorials/bookmarks/
 @RestController
@@ -114,6 +116,13 @@ public class NodeController {
 				})
 				.orElse(ResponseEntity.noContent().build());
 		*/
-		return ResponseEntity.noContent().build();
+		
+		//FIXME: double id in uri
+		URI location = ServletUriComponentsBuilder
+				.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(oid).toUri();
+
+		return ResponseEntity.created(location).build();
+		//return ResponseEntity.noContent().build();
 	}
 }
