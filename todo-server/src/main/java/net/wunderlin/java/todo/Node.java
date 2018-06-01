@@ -130,12 +130,6 @@ public class Node extends Database {
 	public final int[] JSONchildren = {};
 	
 	/**
-	 * Fake Dirty Attribute for JSON
-	 */
-	@JsonProperty("dirty")
-	public final boolean JSONdirty = false;
-	
-	/**
 	 * Set the display name of the Root node
 	 * 
 	 * @param name
