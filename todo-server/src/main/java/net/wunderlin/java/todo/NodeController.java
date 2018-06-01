@@ -7,11 +7,16 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +26,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RestController
 @RequestMapping("/api")
 public class NodeController {
+	
+	@Autowired
+	private HttpServletRequest request;
 	
 	/**
 	 * Open the Database on Startup
@@ -85,7 +93,7 @@ public class NodeController {
     
     // TODO: add error handling
     @PostMapping({"/node","/node/{id}"})
-	ResponseEntity<?> add(@PathVariable Integer id, @RequestBody Map<String, Object> input) {
+	ResponseEntity<?> update(@PathVariable Integer id, @RequestBody Map<String, Object> input) {
 		//System.out.println("POST: " + Integer.toString(id));
 		//System.out.println(input);
 		int oid = (int) input.get("id");
@@ -96,33 +104,44 @@ public class NodeController {
 		try {
 			n.store();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//System.out.println(n);
 		
-		/*
-		return this.accountRepository
-				.findByUsername(userId)
-				.map(account -> {
-					Bookmark result = bookmarkRepository.save(new Bookmark(account,
-							input.getUri(), input.getDescription()));
-
-					URI location = ServletUriComponentsBuilder
-						.fromCurrentRequest().path("/{id}")
-						.buildAndExpand(result.getId()).toUri();
-
-					return ResponseEntity.created(location).build();
-				})
-				.orElse(ResponseEntity.noContent().build());
-		*/
-		
-		//FIXME: double id in uri
 		URI location = ServletUriComponentsBuilder
-				.fromCurrentRequest().path("/{id}")
+				.fromCurrentRequest().path("")
 				.buildAndExpand(oid).toUri();
-
+		
+		// System.out.println(request.getRequestURL().toString());
+		
 		return ResponseEntity.created(location).build();
 		//return ResponseEntity.noContent().build();
+	}
+    
+    // TODO: add error handling
+    @PutMapping("/node")
+	ResponseEntity<?> create(@RequestBody Map<String, Object> input) {
+		Node n = new Node();
+		n.setName((String) input.get("name"));
+		try {
+			n.setParent((int) input.get("parentId"));
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
+		try {
+			n.store();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		/*
+		URI location = ServletUriComponentsBuilder
+				.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(n.getId()).toUri();
+		*/
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Location", request.getRequestURL().toString() + "/" + n.getId());
+		return new ResponseEntity<Object>(n, headers, HttpStatus.OK);
 	}
 }

@@ -26,10 +26,19 @@
     	return false;
     }
     
-    function save() {
+    function update() {
     	var id = document.getElementById("id").value
     	var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
     	xmlhttp.open("POST", '/api/node/' + id);
+    	xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    	xmlhttp.send(document.getElementById("result").value);
+    	return false;
+    }
+    
+    function create() {
+    	//var id = document.getElementById("id").value
+    	var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+    	xmlhttp.open("PUT", '/api/node');
     	xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     	xmlhttp.send(document.getElementById("result").value);
     	return false;
@@ -46,7 +55,8 @@
 		<textarea id="result" style="width: 40em; height: 15em;"></textarea>
 	</div>
 	<div>
-		<button onclick="return save();">Save</button>
+		<button onclick="return update();">Update</button>
+		<button onclick="return create();">Create</button>
 	</div>
 </form>
 
