@@ -58,9 +58,9 @@
 		</dependency>
 		<!-- json DateTime -->
 		<dependency>
-   <groupId>com.fasterxml.jackson.datatype</groupId>
-   <artifactId>jackson-datatype-jsr310</artifactId>
-</dependency>
+		   <groupId>com.fasterxml.jackson.datatype</groupId>
+		   <artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -68,7 +68,10 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
+	            <!-- configuration>
+	                <executable>true</executable>
+	            </configuration -->
+            </plugin>
 		</plugins>
 	</build>
 
