@@ -183,6 +183,9 @@ public class NodeController {
     	isValidNode(n, oid);
 		
 		n.setName((String) input.get("name"));
+		n.setDescription((String) input.get("description"));
+		n.setParent((int) input.get("parentId")); 
+		
 		try {
 			n.store();
 		} catch (SQLException e) {
@@ -206,6 +209,7 @@ public class NodeController {
 	ResponseEntity<?> create(@RequestBody Map<String, Object> input) {
 		Node n = new Node();
 		n.setName((String) input.get("name"));
+		n.setDescription((String) input.get("description"));
 		try {
 			n.setParent((int) input.get("parentId"));
 		} catch (Exception e1) {

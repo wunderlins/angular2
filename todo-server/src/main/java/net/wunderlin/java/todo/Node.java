@@ -64,6 +64,11 @@ public class Node extends Database {
 	private String name;
 	
 	/**
+	 * The description property.
+	 */
+	private String description = "";
+	
+	/**
 	 * A reference to the parent node. This points to the parents {@link #id}
 	 */
 	@JsonBackReference
@@ -288,6 +293,7 @@ public class Node extends Database {
 		
 		try {
 			this.name        = rs.getString("name");
+			this.description = rs.getString("description");
 			this.parent      = rs.getInt("parent");
 			this.numChildren = rs.getInt("numChildren");
 			this.ctime = sqliteDateToJavaDate(rs.getInt("ctime"));
@@ -399,9 +405,10 @@ public class Node extends Database {
 	@Override
 	public PreparedStatement loadStmt() {
 		PreparedStatement loadStmt = null;
-		String sql = "SELECT id, name, parent, strftime('%s', ctime) ctime, strftime('%s',mtime) mtime, "
+		String sql = "SELECT id, name, description, parent, strftime('%s', ctime) ctime, strftime('%s',mtime) mtime, "
 				   + "(SELECT count(id) FROM node WHERE parent=?) as numChildren "
 	               + "FROM node WHERE id=?;";
+		System.out.println(sql);
 		try {
 			loadStmt = conn.prepareStatement(sql);
 			loadStmt.setInt(1, this.id);
@@ -422,10 +429,12 @@ public class Node extends Database {
 	public PreparedStatement updateStmt() {
 		PreparedStatement updateStmt = null;
 		try {
-			updateStmt = conn.prepareStatement("UPDATE node SET name=?, parent=? WHERE id=?;");
+			updateStmt = conn.prepareStatement("UPDATE node SET name=?, parent=?, description=? WHERE id=?;");
 			updateStmt.setString(1, this.name);
 			updateStmt.setInt(2, this.parent);
-			updateStmt.setInt(3, this.id);
+			updateStmt.setString(3, this.description);
+			updateStmt.setInt(4, this.id);
+			System.out.println(this.description);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -442,9 +451,10 @@ public class Node extends Database {
 	public PreparedStatement insertStmt() {
 		PreparedStatement insertStmt = null;
 		try {
-			insertStmt = conn.prepareStatement("INSERT INTO node (name, parent) VALUES (?, ?);");
+			insertStmt = conn.prepareStatement("INSERT INTO node (name, parent, description) VALUES (?, ?, ?);");
 			insertStmt.setString(1, this.name);
 			insertStmt.setInt(2, this.parent);
+			insertStmt.setString(3, this.description);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -476,7 +486,7 @@ public class Node extends Database {
 	@Override
 	public ArrayList<String> createStmt() {
 		ArrayList<String> createStmt = new ArrayList<>();
-		String sql = "CREATE TABLE IF NOT EXISTS node (id INTEGER PRIMARY KEY, name VARCHAR(255) NOT NULL, "
+		String sql = "CREATE TABLE IF NOT EXISTS node (id INTEGER PRIMARY KEY, name VARCHAR(255) NOT NULL, description TEXT NULL, "
 				   + "parent INTEGER DEFAULT 0, ctime DEFAULT CURRENT_TIMESTAMP, mtime DEFAULT CURRENT_TIMESTAMP);";
 		String trigger = "CREATE TRIGGER IF NOT EXISTS update_node_timestamp AFTER UPDATE ON node " + 
 				"BEGIN " + 
@@ -509,6 +519,16 @@ public class Node extends Database {
 		if (name != this.name)
 			dirty = true;
 		this.name = name;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		if (description != this.description)
+			dirty = true;
+		this.description = description;
 	}
 	
 	public int getParentId() {
@@ -600,7 +620,7 @@ public class Node extends Database {
 		if (childrenLoaded && useCache)
 			return children;
 		
-		String sql = "SELECT no.id, no.name, no.parent, strftime('%s', ctime) ctime, strftime('%s', mtime) mtime, "
+		String sql = "SELECT no.id, no.name, no.description, no.parent, strftime('%s', ctime) ctime, strftime('%s', mtime) mtime, "
 				   + "(SELECT count(n.id) FROM node n WHERE parent=no.id) as numChildren "
 		           + "FROM node no WHERE no.parent=?;";
 		
@@ -613,6 +633,7 @@ public class Node extends Database {
 			Node n = new Node();
 			n.id = rs.getInt("id");
 			n.name = rs.getString("name");
+			n.description = rs.getString("description");
 			n.parent = rs.getInt("parent");
 			n.numChildren = rs.getInt("numChildren");
 			n.ctime = sqliteDateToJavaDate(rs.getInt("ctime"));
