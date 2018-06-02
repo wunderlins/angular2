@@ -1,15 +1,22 @@
 package net.wunderlin.java.todo;
 
+import java.io.File;
 import java.net.URI;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,14 +30,46 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-// https://spring.io/guides/tutorials/bookmarks/
+/**
+ * RESTful service for creating/updating and deleting nodes
+ * <p>
+ * supported methods: GET/PUT/POST/DELETE for nodes.
+ * <p>
+ * The convenience method /node/{id}/children does only support GET. Multiple children 
+ * must be manipulated individually through the /node/{id} interface.
+ * 
+ * https://spring.io/guides/tutorials/bookmarks/
+ * @author wus
+ */
 @RestController
 @RequestMapping("/api")
 public class NodeController {
+	@Value("${todo-server.dburi}")
+	private String dburi;
 	
 	@Autowired
 	private HttpServletRequest request;
 	
+	@Autowired
+	private Environment environment;
+	
+	private static final Logger logger = LoggerFactory.getLogger(NodeController.class);
+	
+	/**
+	 * if the DEV profile is loaded, then CORS will automatically be disabled
+	 * @see CorsFilter
+	 */
+	public static boolean disable_cors = false;
+	
+	/**
+	 * Check if we could get a valid node from the DB
+	 * <p>
+	 * if the id is -2, this means the node could not be found in the database which should result in a 404.
+	 * 
+	 * @param n Created Node
+	 * @param id
+	 * @throws Exception
+	 */
 	private void isValidNode(Node n, int id) throws Exception{
 		if (n.getId() == -2)
 			throw new NodeNotFoundException(id);
@@ -41,11 +80,33 @@ public class NodeController {
 	 */
 	@PostConstruct
 	public void init() {
+		
+		// find DB file path
 		String f = System.getProperty("user.dir") + "/nodes.db";
-		System.out.println("Database file: " + f);
+		f = dburi;
+		f = f.replaceFirst("^~", System.getProperty("user.home"));
+		
+		// check if we are in dev environment, if so, disable CORS
+		logger.info("Active Profiles: [" + String.join(",", this.environment.getActiveProfiles()) + "]");
+		if (Arrays.asList(environment.getActiveProfiles()).contains("dev")) {
+			NodeController.disable_cors = true;
+		}
+		
+		// open and initialize Database
+		boolean create_structure = false;
+		File fh = new File(f);
+		if(!fh.exists()) { 
+			create_structure = true;
+		}
+		
 		try {
 			Database.open(f);
-			System.out.println("Opening Databse");
+			logger.info("Opening Databse: " + f);
+			if (create_structure) {
+				logger.info("Creating table Structure.");
+				Node n = new Node();
+				n.createTable();
+			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -67,7 +128,7 @@ public class NodeController {
         if (id.isPresent()) {
         	requestId = id.get(); //returns the id
         }
-    	System.out.println("GET id: " + Integer.toString(requestId));
+        logger.info("GET id: " + Integer.toString(requestId));
     	// prevent following references up (parent) and down (children):
     	// http://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion
     	
@@ -93,7 +154,7 @@ public class NodeController {
         if (id.isPresent()) {
         	requestId = id.get(); //returns the id
         }
-    	System.out.println("GET Children id: " + Integer.toString(requestId));
+        logger.info("GET Children id: " + Integer.toString(requestId));
     	// prevent following references up (parent) and down (children):
     	// http://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion
         Node n = new Node(requestId);
@@ -104,10 +165,18 @@ public class NodeController {
         return children;
     }
     
+    /**
+     * Update an existing node
+     * 
+     * @param id
+     * @param input
+     * @return
+     * @throws Exception
+     */
     @PostMapping({"/node","/node/{id}"})
 	ResponseEntity<?> update(@PathVariable Integer id, @RequestBody Map<String, Object> input) throws Exception {
 		int oid = (int) input.get("id");
-    	System.out.println("POST id: " + oid);
+		logger.info("POST id: " + oid);
 		Node n = new Node(oid);
     	isValidNode(n, oid);
 		
@@ -125,7 +194,12 @@ public class NodeController {
 		return ResponseEntity.created(location).build();
 	}
     
-    // TODO: add error handling
+    /**
+     * create a new node
+     * 
+     * @param input
+     * @return
+     */
     @PutMapping("/node")
 	ResponseEntity<?> create(@RequestBody Map<String, Object> input) {
 		Node n = new Node();
@@ -147,10 +221,16 @@ public class NodeController {
 		return new ResponseEntity<Object>(n, headers, HttpStatus.OK);
 	}
 
-    // TODO: add error handling
+    /**
+     * Delete an existing Node
+     * 
+     * @param id
+     * @return
+     * @throws Exception
+     */
     @DeleteMapping("/node/{id}")
 	ResponseEntity<?> delete(@PathVariable Integer id) throws Exception {
-    	System.out.println("DELETE: " + id);
+    	logger.info("DELETE: " + id);
 		Node n = new Node(id);
     	isValidNode(n, id);
 		
