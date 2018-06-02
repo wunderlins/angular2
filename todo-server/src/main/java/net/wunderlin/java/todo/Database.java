@@ -34,7 +34,7 @@ public abstract class Database {
 		}
 	}
 	
-	public void close() throws SQLException {
+	public static void close() throws SQLException {
 		conn.close();
 	}
 	

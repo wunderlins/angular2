@@ -294,6 +294,7 @@ public class Node extends Database {
 			this.mtime = sqliteDateToJavaDate(rs.getInt("mtime"));
 			// this.ctime = new java.util.Date((long) rs.getInt("ctime") * 1000);
 			// this.mtime = new java.util.Date((long) rs.getInt("mtime") * 1000);
+			this.loaded = true;
 		} catch (Exception e) {
 			throw new Exception("Node " + String.valueOf(this.id) + " not found");
 		}
