@@ -51,6 +51,22 @@
     	xmlhttp.send(document.getElementById("result").value);
     	return false;
     }
+    
+    function delnode() {
+    	var id = document.getElementById("id").value
+    	var url = apiUri + "/" + id;
+    	console.log("DELETE " + url);
+    	var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance 
+    	try {
+	    	xmlhttp.open("delete", url, true);
+	    	xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	    	xmlhttp.send();
+    	} catch(err) {
+    		console.log(err);
+    	}
+    	
+    	return false;
+    }
     </script>
 </head>
 <body>
@@ -68,6 +84,7 @@
 	<div>
 		<button onclick="return update();">Update</button>
 		<button onclick="return create();">Create</button>
+		<button onclick="return delnode();">Delete</button>
 	</div>
 </form>
 

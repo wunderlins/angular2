@@ -56,6 +56,11 @@
 			<groupId>org.xerial</groupId>
 			<artifactId>sqlite-jdbc</artifactId>
 		</dependency>
+		<!-- json DateTime -->
+		<dependency>
+   <groupId>com.fasterxml.jackson.datatype</groupId>
+   <artifactId>jackson-datatype-jsr310</artifactId>
+</dependency>
 	</dependencies>
 
 	<build>
