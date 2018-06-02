@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public abstract class Database {
 	static protected String url = "";
@@ -56,13 +57,20 @@ public abstract class Database {
 	}
 	
 	public void createTable() throws SQLException {
-		createStmt().execute();
+		ArrayList<String> sql = createStmt();
+		sql.forEach((s) -> {
+			try {
+				stmt.execute(s);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}); 
 	}
 	
 	public abstract PreparedStatement deleteStmt();
 	public abstract PreparedStatement loadStmt();
 	public abstract PreparedStatement insertStmt();
 	public abstract PreparedStatement updateStmt();
-	public abstract PreparedStatement createStmt();
+	public abstract ArrayList<String> createStmt();
 
 }

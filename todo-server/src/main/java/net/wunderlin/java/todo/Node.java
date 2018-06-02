@@ -4,8 +4,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -128,6 +130,14 @@ public class Node extends Database {
 	 */
 	@JsonProperty("children")
 	public final int[] JSONchildren = {};
+	
+	// 2018-06-02T05:18:49+00:00
+	@JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ssZ")
+	private Date ctime;
+	
+	// 2018-06-02T05:18:49+00:00
+	@JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ssZ")
+	private Date mtime;
 	
 	/**
 	 * Set the display name of the Root node
@@ -258,6 +268,16 @@ public class Node extends Database {
 	}
 	
 	/**
+	 * java date from sqlite date
+	 * 
+	 * @param field
+	 * @return
+	 */
+	private Date sqliteDateToJavaDate(int field) {
+		return new java.util.Date((long) field * 1000);
+	}
+	
+	/**
 	 * load metadata for an object from the database
 	 * 
 	 * @see todo.Database#load()
@@ -270,10 +290,15 @@ public class Node extends Database {
 			this.name        = rs.getString("name");
 			this.parent      = rs.getInt("parent");
 			this.numChildren = rs.getInt("numChildren");
+			this.ctime = sqliteDateToJavaDate(rs.getInt("ctime"));
+			this.mtime = sqliteDateToJavaDate(rs.getInt("mtime"));
+			// this.ctime = new java.util.Date((long) rs.getInt("ctime") * 1000);
+			// this.mtime = new java.util.Date((long) rs.getInt("mtime") * 1000);
 		} catch (Exception e) {
-			throw new Exception("Node "+String.valueOf(this.id)+" no found");
+			throw new Exception("Node " + String.valueOf(this.id) + " not found");
 		}
 		
+		// System.out.println("load -> " + this.ctime);
 		this.dirty = false;
 	}
 	
@@ -373,7 +398,8 @@ public class Node extends Database {
 	@Override
 	public PreparedStatement loadStmt() {
 		PreparedStatement loadStmt = null;
-		String sql = "SELECT id, name, parent, (SELECT count(id) FROM node WHERE parent=?) as numChildren "
+		String sql = "SELECT id, name, parent, strftime('%s', ctime) ctime, strftime('%s',mtime) mtime, "
+				   + "(SELECT count(id) FROM node WHERE parent=?) as numChildren "
 	               + "FROM node WHERE id=?;";
 		try {
 			loadStmt = conn.prepareStatement(sql);
@@ -447,15 +473,17 @@ public class Node extends Database {
 	 * @see todo.Database#createStmt()
 	 */
 	@Override
-	public PreparedStatement createStmt() {
-		PreparedStatement createStmt = null;
+	public ArrayList<String> createStmt() {
+		ArrayList<String> createStmt = new ArrayList<>();
 		String sql = "CREATE TABLE IF NOT EXISTS node (id INTEGER PRIMARY KEY, name VARCHAR(255) NOT NULL, "
-				   + "parent INTEGER DEFAULT 0);";
-		try {
-			createStmt = conn.prepareStatement(sql);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+				   + "parent INTEGER DEFAULT 0, ctime DEFAULT CURRENT_TIMESTAMP, mtime DEFAULT CURRENT_TIMESTAMP);";
+		String trigger = "CREATE TRIGGER IF NOT EXISTS update_node_timestamp AFTER UPDATE ON node " + 
+				"BEGIN " + 
+				"	UPDATE node SET mtime=DATETIME('now') WHERE rowid = new.rowid; " + 
+				"END";
+		createStmt.add(sql);
+		createStmt.add(trigger);
+		
 		return createStmt;
 	}
 
@@ -464,6 +492,14 @@ public class Node extends Database {
 		return id;
 	}
 	
+	public Date getCtime() {
+		return ctime;
+	}
+
+	public Date getMtime() {
+		return mtime;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -563,7 +599,8 @@ public class Node extends Database {
 		if (childrenLoaded && useCache)
 			return children;
 		
-		String sql = "SELECT no.id, no.name, no.parent, (SELECT count(n.id) FROM node n WHERE parent=no.id) as numChildren "
+		String sql = "SELECT no.id, no.name, no.parent, strftime('%s', ctime) ctime, strftime('%s', mtime) mtime, "
+				   + "(SELECT count(n.id) FROM node n WHERE parent=no.id) as numChildren "
 		           + "FROM node no WHERE no.parent=?;";
 		
 		PreparedStatement loadStmt;
@@ -577,6 +614,11 @@ public class Node extends Database {
 			n.name = rs.getString("name");
 			n.parent = rs.getInt("parent");
 			n.numChildren = rs.getInt("numChildren");
+			n.ctime = sqliteDateToJavaDate(rs.getInt("ctime"));
+			// FIXME: mtime is returned as local date, ctime as UTC. both are UTC in the Database, is this a jdbc driver bug ?
+			n.mtime = sqliteDateToJavaDate(rs.getInt("mtime")-3600-3600);
+			// System.out.println(rs.getInt("ctime")  + " " + rs.getInt("mtime"));
+
 			n.dirty = false;
 			
 			children.add(n);
@@ -609,7 +651,7 @@ public class Node extends Database {
 
 	@Override
 	public String toString() {
-		return String.format("Node [{%s} '%s', parent=%s, children=%s, %s]", id, name, parent, numChildren, dirty);
+		return String.format("Node [{%s} '%s', parent=%s, children=%s, %s], %s", id, name, parent, numChildren, dirty, mtime);
 	}
 
 }

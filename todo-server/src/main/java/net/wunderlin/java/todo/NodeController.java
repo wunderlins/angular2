@@ -162,6 +162,8 @@ public class NodeController {
 		
         ArrayList<Node> children = n.getChildren();
         
+        //children.forEach((c) -> System.out.println(c.getCtime()));
+        
         return children;
     }
     

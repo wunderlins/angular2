@@ -38,6 +38,7 @@ public class Cli {
 		n = Node.getRootNode();
 		
 		// generate 10 dummy objects
+		System.out.println("== Creating nodes");
 		int parent = 0;
 		for(int i=0; i<10; i++) {
 			Node n1 = new Node();
@@ -49,6 +50,7 @@ public class Cli {
 		}
 		
 		// modify 9
+		System.out.println("== Modify");
 		n = new Node(9);
 		n.setName("i am a new name");
 		n.setParent(0);
@@ -58,6 +60,7 @@ public class Cli {
 		System.out.println(n);
 		
 		// delete 10
+		System.out.println("== delete");
 		n = new Node(10);
 		n.delete();
 		System.out.println(n);
@@ -66,6 +69,7 @@ public class Cli {
 		System.out.println(n);
 		
 		// move 7/8/9 to be a child of 1
+		System.out.println("== move parent");
 		n = new Node(7);
 		n.setParent(1);
 		n.store();
@@ -89,6 +93,7 @@ public class Cli {
 		*/
 
 		// get all children of root node
+		System.out.println("== get children");
 		n = new Node(1);
 		System.out.println(n.getChildren());
 		
@@ -96,6 +101,7 @@ public class Cli {
 		ArrayList<Node> c = new ArrayList<>();
 		c = n.getChildren();
 		
+		System.out.println("== update children");
 		for (Node nr: c) {
 			nr.setName(nr.getName() + " ------");
 			nr.store();
@@ -110,6 +116,9 @@ public class Cli {
 			n = n.getParent();
 		} while (n.getParentId() != -1);
 		System.out.println(n);
+		
+		System.out.println(new Node(1));
+		
 	}
 
 }
