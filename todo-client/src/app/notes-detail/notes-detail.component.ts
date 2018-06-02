@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Todo } from '../todo';
+import { Todo, NodeType } from '../todo';
 
 @Component({
   selector: 'app-notes-detail',

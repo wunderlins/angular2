@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Todo } from './todo';
+import { Todo, NodeType } from './todo';
 import { Observable} from 'rxjs';
 import { of } from 'rxjs/observable/of';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -35,14 +35,19 @@ export class NotesService {
     let children = this.http.get<Todo[]>(this.rootUrl + id + '/children')
       .subscribe(notes => {
         notes.forEach((v, k) => {
+          /*
           // console.log(`${k}: ${v}`);
           let n: Todo = new Todo(v.id, v.name, v.description, v.parentId, [], v.numChildren, false);
+          n.mtime = v.mtime;
+          n.ctime = v.ctime;
+          console.log("ctime" + n.ctime);
           ret.push(n);
+           */
           // console.log(n);
         });
         return notes;
      });
-    console.log(ret);
+    // console.log(ret);
     return ret;
   }
 

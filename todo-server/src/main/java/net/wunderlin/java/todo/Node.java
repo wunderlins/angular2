@@ -641,7 +641,8 @@ public class Node extends Database {
 			n.numChildren = rs.getInt("numChildren");
 			n.ctime = sqliteDateToJavaDate(rs.getInt("ctime"));
 			// FIXME: mtime is returned as local date, ctime as UTC. both are UTC in the Database, is this a jdbc driver bug ?
-			n.mtime = sqliteDateToJavaDate(rs.getInt("mtime")-3600-3600);
+			//n.mtime = sqliteDateToJavaDate(rs.getInt("mtime")-3600-3600);
+			n.mtime = sqliteDateToJavaDate(rs.getInt("mtime"));
 			// System.out.println(rs.getInt("ctime")  + " " + rs.getInt("mtime"));
 
 			n.dirty = false;

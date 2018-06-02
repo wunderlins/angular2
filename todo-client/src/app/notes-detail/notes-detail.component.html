@@ -24,4 +24,14 @@
 		<label for="dirty">dirty</label>
 		<input type="checkbox" id="dirty" [(ngModel)]="note.dirty" placeholder="dirty">
 	</div>
+
+	<div>
+		<label for="ctime">ctime</label> {{ note.ctime | date :'dd.MM.yyyy hh:mm:ss'}}
+		<input type="datetime" id="ctime" [(ngModel)]="note.ctime" placeholder="ctime" readonly>
+	</div>
+	<div>
+		<label for="mtime">mtime</label> {{ note.mtime | date :'dd.MM.yyyy hh:mm:ss'}}
+		<input type="datetime" id="mtime" [(ngModel)]="note.mtime" placeholder="mtime" readonly>
+	</div>
+
 </div>

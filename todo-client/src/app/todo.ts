@@ -1,3 +1,9 @@
+export enum NodeType {
+    BASE = 0,
+    NODE = 1,
+    TASK = 10
+}
+
 export class Todo {
   private childrenLoaded = false;
   private _dirty = false;
@@ -8,6 +14,8 @@ export class Todo {
   private _parentId = 0;
   private _children: Todo[];
   private _numChildren = 0;
+  private _ctime: Date;
+  private _mtime: Date;
   
   constructor(
     Pid, Pname, Pdescription = '', PparentId = 0, Pchildren = [], PnumChildren = 0, Pdirty = false
@@ -38,10 +46,21 @@ export class Todo {
   get children(): Todo[] { return this._children; }
   get numChildren(): number { return this._numChildren; }
   get dirty(): boolean { return this._dirty; }
+  get ctime(): Date { return this._ctime; }
+  get mtime(): Date { return this._mtime; }
   
   set id(id: number) {
     this._id = id;
     this._dirty = true;
+  }
+  
+  set ctime(dt: Date) {
+    this._ctime = dt; 
+    
+  }
+  
+  set mtime(dt: Date) {
+    this._mtime = dt;
   }
   
   set name(name: string) {

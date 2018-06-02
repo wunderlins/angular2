@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Todo } from '../todo';
+import { Todo, NodeType } from '../todo';
 import { NotesService } from '../notes.service';
 // import { ConsoleComponent } from '../console/console.component';
 
@@ -40,12 +40,14 @@ export class NotesComponent implements OnInit {
     // this.parent = this.notesService.getNotes();
     this.notesService.getRoot()
       .subscribe(notes => {
-        console.log(notes);
+        //console.log(notes);
         notes.forEach((v, k) => {
-          console.log(`${k}: ${v}`);
+          //console.log(`${k}: ${v}`);
           let n: Todo = new Todo(v.id, v.name, v.description, v.parentId, [], v.numChildren, false);
+          n.mtime = new Date(v.mtime);
+          n.ctime = new Date(v.ctime);
           this.notes.push(n);
-          console.log(n);
+          //console.log(n);
         });
       });
   }
