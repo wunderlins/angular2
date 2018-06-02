@@ -9,6 +9,23 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public abstract class Database {
+	
+	public enum NodeType {
+		BASE(0),
+		NODE(1),
+		TASK(10);
+		
+		private int type = 0;
+		
+		NodeType(int type) {
+			this.type = type;
+		}
+		
+		int getType() {
+			return this.type;
+		}
+	}
+	
 	static protected String url = "";
 	static Connection conn = null;
 	static Statement stmt = null;
@@ -16,6 +33,8 @@ public abstract class Database {
 	protected boolean loaded = false;
 	protected boolean dirty = false;
 	protected ResultSet rs = null;
+	
+	public final int node_type = NodeType.BASE.getType();
 	
 	public static void open(String db_file) throws SQLException {
 		url = "jdbc:sqlite:" + db_file;

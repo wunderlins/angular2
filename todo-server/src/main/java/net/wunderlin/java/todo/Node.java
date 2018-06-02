@@ -52,6 +52,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Node extends Database {
 	
 	// item properties
+	
+	public final int node_type = NodeType.NODE.getType();
+	
 	/**
 	 * The primary key of an item. -1 is uncommitted. -2 means error while storing. 0 is the root node
 	 * and every other positive integer is a node loaded from the database.  
