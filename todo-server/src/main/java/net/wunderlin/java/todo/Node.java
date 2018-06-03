@@ -422,7 +422,7 @@ public class Node extends Database {
 		String sql = "SELECT id, name, description, parent, strftime('%s', ctime) ctime, strftime('%s',mtime) mtime, progress, "
 				   + "(SELECT count(id) FROM node WHERE parent=?) as numChildren "
 	               + "FROM node WHERE id=?;";
-		System.out.println(sql);
+		//System.out.println(sql);
 		try {
 			loadStmt = conn.prepareStatement(sql);
 			loadStmt.setInt(1, this.id);
