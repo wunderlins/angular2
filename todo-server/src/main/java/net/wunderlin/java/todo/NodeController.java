@@ -177,14 +177,17 @@ public class NodeController {
      */
     @PostMapping({"/node","/node/{id}"})
 	ResponseEntity<?> update(@PathVariable Integer id, @RequestBody Map<String, Object> input) throws Exception {
-		int oid = (int) input.get("id");
+		int oid = id; // (int) input.get("id");
 		logger.info("POST id: " + oid);
 		Node n = new Node(oid);
     	isValidNode(n, oid);
 		
 		n.setName((String) input.get("name"));
 		n.setDescription((String) input.get("description"));
-		n.setParent((int) input.get("parentId")); 
+
+		try {
+			n.setParent((int) input.get("parentId")); 
+		} catch (Exception e) {;}
 
 		try {
 			n.setProgress((int) input.get("progress"));
@@ -215,7 +218,10 @@ public class NodeController {
 		Node n = new Node();
 		n.setName((String) input.get("name"));
 		n.setDescription((String) input.get("description"));
-		n.setParent((int) input.get("parentId")); 
+		
+		try {
+			n.setParent((int) input.get("parentId")); 
+		} catch (Exception e) {;}
 		
 		try {
 			n.setProgress((int) input.get("progress"));

@@ -14,6 +14,7 @@
     <script type="text/javascript">
     function fetch() {
     	var id = document.getElementById("id").value
+    	document.getElementById("result").value = "";
     	
     	var xhr = new XMLHttpRequest();
     	xhr.open('GET', apiUri + "/" + id);
