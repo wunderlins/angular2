@@ -24,3 +24,4 @@
 /nbdist/
 /.nb-gradle/
 /nodes.db
+/hs_err_pid7954.log

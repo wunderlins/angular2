@@ -4,7 +4,7 @@ port=2020
 dburi=./notes.db
 pid_file=todo-server.pid
 
-jar=todo-server-0.1.0-SNAPSHOT.jar
+jar=todo-server-0.0.1-SNAPSHOT.jar
 
 function start() {
 	running=`lsof -i :$port | grep $port`
@@ -15,7 +15,8 @@ function start() {
 
 	nohup java -jar "$jar" \
 		--server.port=$port \
-		--todo-server.dburi="${dburi}" 1>> todo-server.log 2>> todo-error.log &
+		--todo-server.dburi="${dburi}" \
+		--spring.profiles.active=dev 1>> todo-server.log 2>> todo-error.log &
 	echo "$!" > "$pid_file"
 }
 

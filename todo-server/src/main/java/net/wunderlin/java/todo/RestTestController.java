@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@ConditionalOnExpression("${todo-server.resttestenabled}")
 public class RestTestController {
 	@Autowired
 	private HttpServletRequest request;
