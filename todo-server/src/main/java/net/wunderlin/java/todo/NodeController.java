@@ -185,6 +185,10 @@ public class NodeController {
 		n.setName((String) input.get("name"));
 		n.setDescription((String) input.get("description"));
 		n.setParent((int) input.get("parentId")); 
+
+		try {
+			n.setProgress((int) input.get("progress"));
+		} catch (Exception e) {;}
 		
 		try {
 			n.store();
@@ -204,12 +208,19 @@ public class NodeController {
      * 
      * @param input
      * @return
+     * @throws Exception 
      */
     @PutMapping("/node")
-	ResponseEntity<?> create(@RequestBody Map<String, Object> input) {
+	ResponseEntity<?> create(@RequestBody Map<String, Object> input) throws Exception {
 		Node n = new Node();
 		n.setName((String) input.get("name"));
 		n.setDescription((String) input.get("description"));
+		n.setParent((int) input.get("parentId")); 
+		
+		try {
+			n.setProgress((int) input.get("progress"));
+		} catch (Exception e) {;}
+		
 		try {
 			n.setParent((int) input.get("parentId"));
 		} catch (Exception e1) {

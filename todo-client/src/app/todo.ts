@@ -1,5 +1,5 @@
 export enum NodeType {
-    BASE = 0,
+    ROOT = 0,
     NODE = 1,
     TASK = 10
 }

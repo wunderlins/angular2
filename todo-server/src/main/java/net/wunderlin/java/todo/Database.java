@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public abstract class Database {
 	
 	public enum NodeType {
-		BASE(0),
+		ROOT(0),
 		NODE(1),
 		TASK(10);
 		
@@ -34,7 +34,7 @@ public abstract class Database {
 	protected boolean dirty = false;
 	protected ResultSet rs = null;
 	
-	public final int node_type = NodeType.BASE.getType();
+	public int node_type = NodeType.NODE.getType();
 	
 	public static void open(String db_file) throws SQLException {
 		url = "jdbc:sqlite:" + db_file;

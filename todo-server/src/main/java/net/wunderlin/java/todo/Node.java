@@ -53,7 +53,7 @@ public class Node extends Database {
 	
 	// item properties
 	
-	public final int node_type = NodeType.NODE.getType();
+	public int node_type = NodeType.NODE.getType();
 	
 	/**
 	 * The primary key of an item. -1 is uncommitted. -2 means error while storing. 0 is the root node
@@ -76,6 +76,11 @@ public class Node extends Database {
 	 */
 	@JsonBackReference
 	private int parent;
+	
+	/**
+	 * Progress in percent (%)
+	 */
+	private int progress = 0;
 	
 	/**
 	 * number of children.
@@ -171,9 +176,11 @@ public class Node extends Database {
 		this.parent = -1;
 		numChildren = 0;
 		this.children = new ArrayList<>();
+		this.node_type = NodeType.ROOT.getType();
 		
 		if (id > 0) {
 			this.id = id;
+			this.node_type = NodeType.NODE.getType();
 			try {
 				load();
 			} catch (Exception e) {
@@ -206,12 +213,13 @@ public class Node extends Database {
 	 * @see #insert()
 	 */
 	public Node() {
-		id = -1;
-		name = "";
-		parent = -1;
-		numChildren = 0;
-		children = new ArrayList<>();
-		dirty = true;
+		this.id = -1;
+		this.name = "";
+		this.parent = -1;
+		this.numChildren = 0;
+		this.children = new ArrayList<>();
+		this.dirty = true;
+		this.node_type = NodeType.NODE.getType();
 	}
 	
 	/**
@@ -301,6 +309,7 @@ public class Node extends Database {
 			this.numChildren = rs.getInt("numChildren");
 			this.ctime = sqliteDateToJavaDate(rs.getInt("ctime"));
 			this.mtime = sqliteDateToJavaDate(rs.getInt("mtime"));
+			this.progress    = rs.getInt("progress");
 			// this.ctime = new java.util.Date((long) rs.getInt("ctime") * 1000);
 			// this.mtime = new java.util.Date((long) rs.getInt("mtime") * 1000);
 			this.loaded = true;
@@ -356,8 +365,10 @@ public class Node extends Database {
 		super.insert();
 		
 		ResultSet res;
-		res = stmt.executeQuery("SELECT MAX(ID) as id FROM node;");
+		res = stmt.executeQuery("SELECT MAX(ID) as id, strftime('%s', ctime) ctime, strftime('%s',mtime) mtime FROM node;");
 		this.id = res.getInt("id");
+		this.ctime = sqliteDateToJavaDate(res.getInt("ctime"));
+		this.mtime = sqliteDateToJavaDate(res.getInt("mtime"));
 		
 		this.dirty = false;
 	}
@@ -408,7 +419,7 @@ public class Node extends Database {
 	@Override
 	public PreparedStatement loadStmt() {
 		PreparedStatement loadStmt = null;
-		String sql = "SELECT id, name, description, parent, strftime('%s', ctime) ctime, strftime('%s',mtime) mtime, "
+		String sql = "SELECT id, name, description, parent, strftime('%s', ctime) ctime, strftime('%s',mtime) mtime, progress, "
 				   + "(SELECT count(id) FROM node WHERE parent=?) as numChildren "
 	               + "FROM node WHERE id=?;";
 		System.out.println(sql);
@@ -432,11 +443,12 @@ public class Node extends Database {
 	public PreparedStatement updateStmt() {
 		PreparedStatement updateStmt = null;
 		try {
-			updateStmt = conn.prepareStatement("UPDATE node SET name=?, parent=?, description=? WHERE id=?;");
+			updateStmt = conn.prepareStatement("UPDATE node SET name=?, parent=?, description=?, progress=? WHERE id=?;");
 			updateStmt.setString(1, this.name);
 			updateStmt.setInt(2, this.parent);
 			updateStmt.setString(3, this.description);
-			updateStmt.setInt(4, this.id);
+			updateStmt.setInt(4, this.progress);
+			updateStmt.setInt(5, this.id);
 			System.out.println(this.description);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -454,10 +466,11 @@ public class Node extends Database {
 	public PreparedStatement insertStmt() {
 		PreparedStatement insertStmt = null;
 		try {
-			insertStmt = conn.prepareStatement("INSERT INTO node (name, parent, description) VALUES (?, ?, ?);");
+			insertStmt = conn.prepareStatement("INSERT INTO node (name, parent, description, progress) VALUES (?, ?, ?, ?);");
 			insertStmt.setString(1, this.name);
 			insertStmt.setInt(2, this.parent);
 			insertStmt.setString(3, this.description);
+			insertStmt.setInt(4, this.progress);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -489,7 +502,7 @@ public class Node extends Database {
 	@Override
 	public ArrayList<String> createStmt() {
 		ArrayList<String> createStmt = new ArrayList<>();
-		String sql = "CREATE TABLE IF NOT EXISTS node (id INTEGER PRIMARY KEY, name VARCHAR(255) NOT NULL, description TEXT NULL, "
+		String sql = "CREATE TABLE IF NOT EXISTS node (id INTEGER PRIMARY KEY, name VARCHAR(255) NOT NULL, description TEXT NULL, progress INTEGER DEFAULT 0, "
 				   + "parent INTEGER DEFAULT 0, ctime DEFAULT CURRENT_TIMESTAMP, mtime DEFAULT CURRENT_TIMESTAMP);";
 		String trigger = "CREATE TRIGGER IF NOT EXISTS update_node_timestamp AFTER UPDATE ON node " + 
 				"BEGIN " + 
@@ -523,6 +536,20 @@ public class Node extends Database {
 			dirty = true;
 		this.name = name;
 	}
+	
+	public int getProgress() {
+		return progress;
+	}
+	
+	public void setProgress(int progress) {
+		if (progress > 100)
+			progress = 100;
+		
+		if (progress != this.progress)
+			dirty = true;
+		this.progress = progress;
+	}
+	
 	
 	public String getDescription() {
 		return description;
