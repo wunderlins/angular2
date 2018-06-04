@@ -9,12 +9,16 @@
 	<li *ngFor="let note of notes"
 	  class="" 
 	  [class.selected]="note === selected" 
-	  [class.collapsed]="note.numChildren > 0" 
-      (click)="onSelect(note, $event)">{{note.name}}, numChildren={{note.numChildren}} 
-                               parent={{note.parentId}}, dirty={{note.dirty}}</li>
+      (click)="onSelect(note, $event)">
+      <button [class.collapsed]="note.numChildren > 0"
+	      (click)="onExpand(note, $event)"
+      ></button> 
+      
+      {{note.name}}, numChildren={{note.numChildren}} 
+      parent={{note.parentId}}, dirty={{note.dirty}}</li>
 </ul>
 </div>
 
-<button (click)="getChildren()">getChildren()</button>
+<button (click)=getChildren(selected)>getChildren(selected)</button>
 
 <app-notes-detail [note]="selected"></app-notes-detail>

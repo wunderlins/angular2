@@ -13,6 +13,8 @@ export class NotesComponent implements OnInit {
   notes: Todo[] = new Array();
   selected: Todo;
   
+  node: Todo;
+  
   private dummyData(): void {
     let n = new Todo(0, 'Root');
     n.appendChild(new Todo(11, 'note 1', ''));
@@ -29,28 +31,48 @@ export class NotesComponent implements OnInit {
     console.log(event);
   }
   
+  public onExpand(note: Todo, event: any): void {
+    if (note.childrenLoaded === false) {
+      this.getChildren(note);
+      console.log(event.target);
+    }
+    event.stopPropagation();
+  }
+  
   constructor(private notesService: NotesService) {
   }
   
-  getChildren() {
-    this.notesService.getChildren(1);
+  getChildren(n: Todo) {
+    if (n.childrenLoaded === true) {
+      return;
+    }
+    
+    this.notesService.getChildren(n.id).subscribe(notes => {
+      notes.forEach((v, k) => {
+        n.appendChild(this.notesService.createNote(v));
+      });
+      n.childrenLoaded = true;
+      console.log(n.children);
+    });
+  }
+  
+  getNode(id: number): void {
+    this.notesService.getNode(0).subscribe(v => this.node = this.notesService.createNote(v));
   }
   
   getRoot(): void {
     // this.parent = this.notesService.getNotes();
     this.notesService.getRoot()
       .subscribe(notes => {
-        //console.log(notes);
         notes.forEach((v, k) => {
-          //console.log(`${k}: ${v}`);
-          let n: Todo = new Todo(v.id, v.name, v.description, v.parentId, [], v.numChildren, false);
-          n.mtime = new Date(v.mtime);
-          n.ctime = new Date(v.ctime);
+          let n = this.notesService.createNote(v);
           this.notes.push(n);
-          //console.log(n);
+          console.log(n);
         });
       });
   }
+  
+  
 
   ngOnInit() {
     this.getRoot();

@@ -5,7 +5,7 @@ export enum NodeType {
 }
 
 export class Todo {
-  private childrenLoaded = false;
+  public childrenLoaded = false;
   private _dirty = false;
   
   private _id = -1;
@@ -35,8 +35,7 @@ export class Todo {
       child._dirty = true;
     }
     this._children.push(child);
-    this._numChildren++;
-    this._dirty = true;
+    this._numChildren = this._children.length;
   }
   
   get id(): number { return this._id; }

@@ -9,6 +9,7 @@ import { environment } from './../environments/environment';
 export class NotesService {
   
   private rootUrl = environment.apiUrl;
+  //private nodeCache<Todo[]>;
 
   constructor(private http: HttpClient) { }
   
@@ -30,25 +31,19 @@ export class NotesService {
     return nodeList;
   }
   
-  getChildren(id: number): Todo[] {
-    let ret = <Todo[]>[];
-    let children = this.http.get<Todo[]>(this.rootUrl + id + '/children')
-      .subscribe(notes => {
-        notes.forEach((v, k) => {
-          /*
-          // console.log(`${k}: ${v}`);
-          let n: Todo = new Todo(v.id, v.name, v.description, v.parentId, [], v.numChildren, false);
-          n.mtime = v.mtime;
-          n.ctime = v.ctime;
-          console.log("ctime" + n.ctime);
-          ret.push(n);
-           */
-          // console.log(n);
-        });
-        return notes;
-     });
-    // console.log(ret);
-    return ret;
+  getNode(id: number): Observable<Todo> {
+    return this.http.get<Todo>(this.rootUrl + id);
+  }
+  
+  createNote(v) {
+    let node = new Todo(v.id, v.name, v.description, v.parentId, [], v.numChildren, false); 
+    node.mtime = new Date(v.mtime);
+    node.ctime = new Date(v.ctime);
+    return node;
+  }
+  
+  getChildren(id: number): Observable<Todo[]> {
+    return this.http.get<Todo[]>(this.rootUrl + id + '/children');
   }
 
 }
