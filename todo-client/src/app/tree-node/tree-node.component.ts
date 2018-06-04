@@ -9,10 +9,31 @@ import { NotesService } from '../notes.service';
 })
 export class TreeNodeComponent implements OnInit {
   @Input() node: Todo;
+  selected: Todo = null;
+  selectedNode = null;
   
   constructor(private notesService: NotesService) { }
 
   ngOnInit() {
+  }
+  
+  public onSelect(note: Todo, event: any): void {
+    // reset old class
+    let t = event.target;
+    while (t.tagName !== 'LI') {
+      t = t.parentNode;
+    }
+    
+    console.log(t.classList + ' ' + t.tagName);
+    if (this.selected !== null) {
+      console.log(this.selectedNode.classList);
+      this.selectedNode.classList.remove('selected');
+    }
+    
+    t.classList.add('selected');
+    this.selected = note;
+    this.selectedNode = t;
+    event.stopPropagation();
   }
   
   getChildren(n: Todo) {

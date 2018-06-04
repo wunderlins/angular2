@@ -12,6 +12,7 @@ export class NotesComponent implements OnInit {
   
   notes: Todo[] = new Array();
   selected: Todo;
+  root: Todo;
   
   node: Todo;
   
@@ -57,10 +58,11 @@ export class NotesComponent implements OnInit {
   }
   
   getNode(id: number): void {
-    this.notesService.getNode(0).subscribe(v => this.node = this.notesService.createNote(v));
+    this.notesService.getNode(id).subscribe(v => this.node = this.notesService.createNote(v));
   }
   
   getRoot(): void {
+    /*
     // this.parent = this.notesService.getNotes();
     this.notesService.getRoot()
       .subscribe(notes => {
@@ -70,6 +72,10 @@ export class NotesComponent implements OnInit {
           console.log(n);
         });
       });
+    */
+    this.notesService.getNode(0).subscribe(v => 
+      this.root = this.notesService.createNote(v)
+    );
   }
   
   

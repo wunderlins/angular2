@@ -1,4 +1,6 @@
-<li (click)="onExpand(node, $event)" class="tree">
+<li class="tree" 
+	(click)="onSelect(node, $event)"
+	>
 	<button 
 		[class.none]="node.numChildren == 0"
 		[class.collapsed]="node.numChildren > 0"

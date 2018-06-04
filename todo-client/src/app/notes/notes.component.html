@@ -3,28 +3,27 @@
 	Notes
 </h2>
 
-<div *ngIf="notes">{{notes.length}}
+<div>
+	<ul *ngIf="root" class="treeroot">
+		<app-tree-node [node]="root"></app-tree-node>
+	</ul>
+</div>
 
-<ul>
-	<li *ngFor="let note of notes"
-	  class="" 
-	  [class.selected]="note === selected" 
-      (click)="onSelect(note, $event)">
-      <button [class.collapsed]="note.numChildren > 0"
-	      (click)="onExpand(note, $event)"
-      ></button> 
-      
-      {{note.name}}, numChildren={{note.numChildren}} 
-      parent={{note.parentId}}, dirty={{note.dirty}}</li>
-</ul>
+<div *ngIf="root">
+	<!-- ul>
+		<li *ngFor="let note of notes"
+		  class="" 
+		  [class.selected]="note === selected" 
+	      (click)="onSelect(note, $event)">
+	      <button [class.collapsed]="note.numChildren > 0"
+		      (click)="onExpand(note, $event)"
+	      ></button> 
+	      
+	      {{note.name}}, numChildren={{note.numChildren}} 
+	      parent={{note.parentId}}, dirty={{note.dirty}}</li>
+	</ul-->
 </div>
 
 
 <button (click)=getChildren(selected)>getChildren(selected)</button>
 <app-notes-detail [note]="selected"></app-notes-detail>
-
-<div>
-	<ul *ngIf="selected" class="treeroot">
-		<app-tree-node [node]="selected"></app-tree-node>
-	</ul>
-</div>

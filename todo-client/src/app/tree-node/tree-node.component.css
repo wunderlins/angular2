@@ -1,3 +1,7 @@
+.selected {
+	background-color: #EEE;
+}
+
 ul.tree {
 	list-style-type: none;
 	padding-left: 1em;
@@ -9,7 +13,7 @@ li.tree {
 	padding-left: 0em;
 	margin-left: 0em;
 	margin-bottom: 0em;
-	border: 1px dashed red;
+	/* border: 1px dashed red; */
 }
 
 button {
@@ -20,8 +24,7 @@ button {
 
 button.none {
 	background-color: inherit;
-	border: inherit;
-	border: 1px dashed blue;
+	/* border: 1px dashed blue; */
 }
 
 .tree > button.none:before {
