@@ -19,6 +19,10 @@
 </ul>
 </div>
 
-<button (click)=getChildren(selected)>getChildren(selected)</button>
 
+<button (click)=getChildren(selected)>getChildren(selected)</button>
 <app-notes-detail [note]="selected"></app-notes-detail>
+
+<ul *ngIf="selected">
+	<app-tree-node [node]="selected"></app-tree-node>
+</ul>

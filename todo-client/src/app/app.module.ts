@@ -9,13 +9,15 @@ import { NotesComponent } from './notes/notes.component';
 import { ConsoleComponent } from './console/console.component';
 import { NotesService } from './notes.service';
 import { NotesDetailComponent } from './notes-detail/notes-detail.component';
+import { TreeNodeComponent } from './tree-node/tree-node.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NotesComponent,
     ConsoleComponent,
-    NotesDetailComponent
+    NotesDetailComponent,
+    TreeNodeComponent
   ],
   imports: [
     BrowserModule,
