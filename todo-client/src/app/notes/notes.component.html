@@ -23,6 +23,8 @@
 <button (click)=getChildren(selected)>getChildren(selected)</button>
 <app-notes-detail [note]="selected"></app-notes-detail>
 
-<ul *ngIf="selected">
-	<app-tree-node [node]="selected"></app-tree-node>
-</ul>
+<div>
+	<ul *ngIf="selected" class="treeroot">
+		<app-tree-node [node]="selected"></app-tree-node>
+	</ul>
+</div>

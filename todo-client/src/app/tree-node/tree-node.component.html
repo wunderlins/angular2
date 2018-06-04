@@ -1,6 +1,13 @@
-<li (click)="onExpand(node, $event)"><span>{{node.name}}</span></li>
-<ul *ngIf="node.childrenLoaded === true">
-    <li *ngFor="let child of node.children">
+<li (click)="onExpand(node, $event)" class="tree">
+	<button 
+		[class.none]="node.numChildren == 0"
+		[class.collapsed]="node.numChildren > 0"
+		(click)="onExpand(node, $event)"
+	></button> 
+	<span>{{node.name}}</span>
+</li>
+<ul *ngIf="node.childrenLoaded === true" class="tree">
+    <li *ngFor="let child of node.children" class="tree">
 		<app-tree-node [node]="child"></app-tree-node>
     </li>
 </ul>

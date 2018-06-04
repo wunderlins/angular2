@@ -1,0 +1,44 @@
+ul.tree {
+	list-style-type: none;
+	padding-left: 1em;
+	margin-left: 0;
+}
+
+li.tree {
+	position: relative;
+	padding-left: 0em;
+	margin-left: 0em;
+	margin-bottom: 0em;
+	border: 1px dashed red;
+}
+
+button {
+	border: 0px solid white;
+	width: 1em;
+	background-color: inherit;
+}
+
+button.none {
+	background-color: inherit;
+	border: inherit;
+	border: 1px dashed blue;
+}
+
+.tree > button.none:before {
+	width: 1em;
+}
+
+.tree > button.none:before {
+	font-family: FontAwesome;
+	content: " ";
+}
+
+.tree > button.collapsed:before {
+	font-family: FontAwesome;
+	content: "\f101";
+}
+
+.tree > button.expanded:before {
+	font-family: FontAwesome;
+	content: "\f103";
+}

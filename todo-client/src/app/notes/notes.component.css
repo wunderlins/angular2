@@ -30,3 +30,8 @@ button.expanded:before {
 	font-family: FontAwesome;
 	content: "\f103";
 }
+
+.treeroot {
+	list-style-type: none;
+	padding-left: 0;
+}
