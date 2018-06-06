@@ -3,10 +3,8 @@
 	Notes
 </h2>
 
-<div>
-	<ul *ngIf="root" class="treeroot">
-		<app-tree-node [node]="root"></app-tree-node>
-	</ul>
+<div *ngIf="root">
+	<app-tree-node [node]="root"></app-tree-node>
 </div>
 
 <div *ngIf="root">

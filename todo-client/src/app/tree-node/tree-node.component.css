@@ -1,19 +1,15 @@
-.selected {
-	background-color: #EEE;
-}
-
-ul.tree {
+ul.tree, li.tree {
 	list-style-type: none;
 	padding-left: 1em;
 	margin-left: 0;
 }
 
-li.tree {
-	position: relative;
-	padding-left: 0em;
-	margin-left: 0em;
-	margin-bottom: 0em;
-	/* border: 1px dashed red; */
+ul.tree, .treeroot {
+	padding-left: 0;
+}
+
+.selected {
+	background-color: #EEE;
 }
 
 button {

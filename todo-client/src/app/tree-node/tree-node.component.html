@@ -1,6 +1,7 @@
 <li class="tree" 
 	*ngIf="node.type != nodeType.ROOT"
 	(click)="onSelect(node, $event)"
+	[ngClass]="{'treeroot': 'node.type == nodeType.ROOT'}"
 	>
 	<button 
 		[class.none]="node.numChildren == 0"
@@ -9,7 +10,9 @@
 	></button> 
 	<span>{{node.name}}</span> {{node.type}}
 </li>
-<ul *ngIf="node.childrenLoaded === true" class="tree">
+<ul *ngIf="node.childrenLoaded === true" class="tree"
+	[ngClass]="{'treeroot': 'node.type == nodeType.ROOT'}"
+	>
     <li *ngFor="let child of node.children" class="tree">
 		<app-tree-node [node]="child"></app-tree-node>
     </li>
