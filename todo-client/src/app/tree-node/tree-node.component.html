@@ -1,4 +1,5 @@
 <li class="tree" 
+	*ngIf="node.type != nodeType.ROOT"
 	(click)="onSelect(node, $event)"
 	>
 	<button 
@@ -6,7 +7,7 @@
 		[class.collapsed]="node.numChildren > 0"
 		(click)="onExpand(node, $event)"
 	></button> 
-	<span>{{node.name}}</span>
+	<span>{{node.name}}</span> {{node.type}}
 </li>
 <ul *ngIf="node.childrenLoaded === true" class="tree">
     <li *ngFor="let child of node.children" class="tree">

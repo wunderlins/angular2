@@ -11,10 +11,14 @@ export class TreeNodeComponent implements OnInit {
   @Input() node: Todo;
   selected: Todo = null;
   selectedNode = null;
+  public nodeType = NodeType;
   
   constructor(private notesService: NotesService) { }
 
   ngOnInit() {
+    if (this.node.type == this.nodeType.ROOT) {
+      this.getChildren(this.node);
+    }
   }
   
   public onSelect(note: Todo, event: any): void {
@@ -52,6 +56,7 @@ export class TreeNodeComponent implements OnInit {
   
   
   public onExpand(note: Todo, event: any): void {
+    console.log(note);
     if (note.childrenLoaded === false) {
       this.getChildren(note);
       console.log(event.target);

@@ -39,6 +39,7 @@ export class NotesService {
     let node = new Todo(v.id, v.name, v.description, v.parentId, [], v.numChildren, false); 
     node.mtime = new Date(v.mtime);
     node.ctime = new Date(v.ctime);
+    node.type = v.node_type
     return node;
   }
   
