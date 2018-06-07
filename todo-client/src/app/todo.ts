@@ -17,6 +17,7 @@ export class Todo {
   private _numChildren = 0;
   private _ctime: Date;
   private _mtime: Date;
+  public expanded = false;
   
   constructor(
     Pid, Pname, Pdescription = '', PparentId = 0, Pchildren = [], PnumChildren = 0, Pdirty = false

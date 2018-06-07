@@ -54,6 +54,7 @@ export class NotesComponent implements OnInit {
       });
       n.childrenLoaded = true;
       console.log(n.children);
+      console.log('node cache length: ' + this.notesService.nodeCache.length);
     });
   }
   
@@ -62,23 +63,10 @@ export class NotesComponent implements OnInit {
   }
   
   getRoot(): void {
-    /*
-    // this.parent = this.notesService.getNotes();
-    this.notesService.getRoot()
-      .subscribe(notes => {
-        notes.forEach((v, k) => {
-          let n = this.notesService.createNote(v);
-          this.notes.push(n);
-          console.log(n);
-        });
-      });
-    */
     this.notesService.getNode(0).subscribe(v => 
       this.root = this.notesService.createNote(v)
     );
   }
-  
-  
 
   ngOnInit() {
     this.getRoot();

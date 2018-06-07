@@ -1,21 +1,19 @@
-ul.tree, li.tree {
+.selected {
+	background-color: #EEE;
+}
+
+.treeNode {
+	
+}
+
+.treeList {
 	list-style-type: none;
 	padding-left: 1em;
 	margin-left: 0;
 }
 
-ul.tree, .treeroot {
-	padding-left: 0;
-}
-
-.selected {
-	background-color: #EEE;
-}
-
-button {
-	border: 0px solid white;
-	width: 1em;
-	background-color: inherit;
+.open {
+	background-color: orange;
 }
 
 button.none {
@@ -23,21 +21,30 @@ button.none {
 	/* border: 1px dashed blue; */
 }
 
-.tree > button.none:before {
-	width: 1em;
+.tree > button {
+	border: 0px solid white;
+	background-color: inherit;
+	width: 1.5em;
 }
 
 .tree > button.none:before {
 	font-family: FontAwesome;
-	content: " ";
+	content: "\f15b";
 }
 
 .tree > button.collapsed:before {
 	font-family: FontAwesome;
-	content: "\f101";
+	content: "\f07b";
 }
 
 .tree > button.expanded:before {
 	font-family: FontAwesome;
-	content: "\f103";
+	content: "\f07c";
 }
+
+.treeroot {
+	padding-left: 0 ! important;
+	margin-left: 0 ! important;
+	border: 1px solid red;
+}
+

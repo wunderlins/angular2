@@ -12,13 +12,24 @@ export class TreeNodeComponent implements OnInit {
   selected: Todo = null;
   selectedNode = null;
   public nodeType = NodeType;
+  public expanded = false;
+  public childrenLoaded = false;
+  public open = false;
   
   constructor(private notesService: NotesService) { }
 
   ngOnInit() {
-    if (this.node.type == this.nodeType.ROOT) {
+    if (this.node.type === this.nodeType.ROOT) {
       this.getChildren(this.node);
     }
+  }
+  
+  public isRootNode(node: Todo): boolean {
+    return (node.type === this.nodeType.ROOT || this.getParent(node).type === this.nodeType.ROOT);  
+  }
+  
+  public getParent(node: Todo): Todo {
+    return this.notesService.getParent(node);
   }
   
   public onSelect(note: Todo, event: any): void {
@@ -27,8 +38,7 @@ export class TreeNodeComponent implements OnInit {
     while (t.tagName !== 'LI') {
       t = t.parentNode;
     }
-    
-    console.log(t.classList + ' ' + t.tagName);
+
     if (this.selected !== null) {
       console.log(this.selectedNode.classList);
       this.selectedNode.classList.remove('selected');
@@ -51,17 +61,46 @@ export class TreeNodeComponent implements OnInit {
       });
       n.childrenLoaded = true;
       console.log(n.children);
+      this.childrenLoaded = true;
     });
   }
   
-  
   public onExpand(note: Todo, event: any): void {
-    console.log(note);
+    // make sure the data is loaded
     if (note.childrenLoaded === false) {
       this.getChildren(note);
       console.log(event.target);
     }
+    
+    // this event is handled.
     event.stopPropagation();
+    
+    // reverse state
+    this.open = (this.open) ? false : true;
+    
+    
+    // find next ul tag, this is the container for the children
+    /*
+    let t = event.target;
+    while (t.tagName !== 'LI') {
+      t = t.parentNode;
+    }
+    console.log('searching li: ' + t.innerHTML);
+    
+    let s = t;
+    while (s.tagName !== 'UL') {
+      console.log('searching ul: ' + s.nodeType);
+      if (s.tagName) {
+        console.log('--> Tag: ' + s.tagName);
+      }
+      
+      if (!s.nextSibling) {
+        console.log('Error: ran out of tags while searching sibling UL for LI');
+        return;
+      }
+      s = s.nextSibling;
+    }
+    */
   }
   
 
