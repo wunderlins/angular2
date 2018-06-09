@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import {Observable} from 'rxjs/Rx'
 import 'rxjs/add/observable/fromEvent';
 
 @Component({
@@ -18,16 +18,13 @@ export class UiComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    let click$ = Observable.fromEvent(this.button.nativeElement, 'click')
-        .subscribe((evt: MouseEvent) => {
-          console.log(evt);
-          this.textarea.nativeElement.value = evt.type + "\n" + this.textarea.nativeElement.value; 
-        });
+    const dblclick = Observable.fromEvent(this.button.nativeElement, 'dblclick');
+    const click = Observable.fromEvent(this.button.nativeElement, 'click');
     
-    let dblclick$ = Observable.fromEvent(this.button.nativeElement, 'dblclick')
-        .subscribe((evt: MouseEvent) => {
-          console.log(evt);
-          this.textarea.nativeElement.value = evt.type + "\n" + this.textarea.nativeElement.value; 
-        });
+    const combined = Observable.merge(dblclick, click)
+      .subscribe((evt: MouseEvent) => { 
+        console.log(evt);
+        this.textarea.nativeElement.value = evt.type + "\n" + this.textarea.nativeElement.value; 
+      });
   }
 }
