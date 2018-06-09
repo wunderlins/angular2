@@ -2,18 +2,16 @@
 	background-color: #EEE;
 }
 
-.treeNode {
-	
-}
+.treeNode { }
 
 .treeList {
 	list-style-type: none;
 	padding-left: 1em;
 	margin-left: 0;
+	display: none;
 }
-
 .open {
-	background-color: orange;
+	display: block;
 }
 
 button.none {

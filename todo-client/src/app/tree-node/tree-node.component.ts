@@ -24,6 +24,22 @@ export class TreeNodeComponent implements OnInit {
     }
   }
   
+  public buttonClasses(node: Todo) {
+    let none = (node.numChildren === 0);
+    return {
+      'expanded': (this.open && !none), 
+      'collapsed': (!this.open && !none),
+      'none': none
+      };
+  }
+  
+  public nodeClasses(node: Todo): Object {
+    return {
+      'treeroot': (node.type === NodeType.ROOT),
+      'open': this.open
+    };
+  }
+  
   public isRootNode(node: Todo): boolean {
     return (node.type === this.nodeType.ROOT || this.getParent(node).type === this.nodeType.ROOT);  
   }
@@ -60,6 +76,7 @@ export class TreeNodeComponent implements OnInit {
         n.appendChild(this.notesService.createNote(v));
       });
       n.childrenLoaded = true;
+      this.open = true;
       console.log(n.children);
       this.childrenLoaded = true;
     });
@@ -77,30 +94,6 @@ export class TreeNodeComponent implements OnInit {
     
     // reverse state
     this.open = (this.open) ? false : true;
-    
-    
-    // find next ul tag, this is the container for the children
-    /*
-    let t = event.target;
-    while (t.tagName !== 'LI') {
-      t = t.parentNode;
-    }
-    console.log('searching li: ' + t.innerHTML);
-    
-    let s = t;
-    while (s.tagName !== 'UL') {
-      console.log('searching ul: ' + s.nodeType);
-      if (s.tagName) {
-        console.log('--> Tag: ' + s.tagName);
-      }
-      
-      if (!s.nextSibling) {
-        console.log('Error: ran out of tags while searching sibling UL for LI');
-        return;
-      }
-      s = s.nextSibling;
-    }
-    */
   }
   
 
