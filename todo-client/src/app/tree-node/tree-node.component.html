@@ -1,21 +1,20 @@
 <li class="tree treeNode" 
 	*ngIf="node.type != nodeType.ROOT"
 	(click)="onSelect(node, $event)"
+	(dblclick)="onExpand(node, $event)"
 	[ngClass]="{'treeroot': isRootNode(node)}"
 	>
 	<button
 		[ngClass]="buttonClasses(node)" 
 		(click)="onExpand(node, $event)"
 	></button> 
-	<span>{{node.id}}</span> <span>{{node.name}}</span> {{node.type}} » {{getParent(node).type}} --
-	{{node.type}} {{nodeType.ROOT}}, open: {{open}}
+	<span class="nodeid">{{node.id}}</span>
+	<span>{{node.name}}</span> 
+	<!-- {{node.type}} » {{getParent(node).type}} --
+	{{node.type}} {{nodeType.ROOT}}, open: {{open}}  -->
 </li>
 <ul *ngIf="node.childrenLoaded === true" class="tree treeList"
 	[ngClass]="nodeClasses(node)"
 	>
 	<app-tree-node [node]="child"  *ngFor="let child of node.children"></app-tree-node>
 </ul>
-
-<!-- 
-	[ngClass]="{'treeroot': node.type == nodeType.ROOT}"
- -->

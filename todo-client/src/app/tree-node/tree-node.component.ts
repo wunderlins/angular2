@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Todo, NodeType } from '../todo';
 import { NotesService } from '../notes.service';
+import { NotesComponent } from '../notes/notes.component';
 
 @Component({
   selector: 'app-tree-node',
@@ -8,9 +9,14 @@ import { NotesService } from '../notes.service';
   styleUrls: ['./tree-node.component.css']
 })
 export class TreeNodeComponent implements OnInit {
+  /**
+   * The approach for staving state of the selected node might break if this component is used 
+   * multiple times in a module.
+   */
+  public static selected: Todo = null;
+  public static selectedNode = null;
+  
   @Input() node: Todo;
-  selected: Todo = null;
-  selectedNode = null;
   public nodeType = NodeType;
   public expanded = false;
   public childrenLoaded = false;
@@ -54,15 +60,16 @@ export class TreeNodeComponent implements OnInit {
     while (t.tagName !== 'LI') {
       t = t.parentNode;
     }
-
-    if (this.selected !== null) {
-      console.log(this.selectedNode.classList);
-      this.selectedNode.classList.remove('selected');
+    
+    if (TreeNodeComponent.selected !== null) {
+      TreeNodeComponent.selectedNode.classList.remove('selected');
+      console.log(TreeNodeComponent.selectedNode.classList);
     }
     
     t.classList.add('selected');
-    this.selected = note;
-    this.selectedNode = t;
+    TreeNodeComponent.selected = note;
+    TreeNodeComponent.selectedNode = t;
+    //NotesComponent.selected = note;
     event.stopPropagation();
   }
   
