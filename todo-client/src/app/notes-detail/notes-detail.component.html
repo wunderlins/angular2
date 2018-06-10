@@ -35,6 +35,6 @@
 	</div>
 	<div>
 		<button type="button" (click)="onCancel(note.id)">Cancel</button>
-		<button type="button" [disabled]="!note.dirty">Save</button>
+		<button type="button" (click)="onSave(note)" [disabled]="!note.dirty">Save</button>
 	</div>
 </div>

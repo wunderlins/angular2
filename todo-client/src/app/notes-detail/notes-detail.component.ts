@@ -16,6 +16,13 @@ export class NotesDetailComponent implements OnInit {
     alert("TBD: reset");
   }
   
+  onSave(node: Todo): void {
+    this.notesService.updateNote(node).subscribe(n => {
+      this.note = this.notesService.createNote(n);
+      this.notesService.decreaseLoading();
+    });
+  }
+  
   ngOnInit() {
     
   }

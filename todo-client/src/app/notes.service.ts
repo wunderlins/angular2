@@ -39,6 +39,11 @@ export class NotesService {
     return this.http.get<Todo>(this.rootUrl + id);
   }
   
+  updateNote(node: Todo): Observable<Todo> {
+    this.increaseLoading();
+    return this.http.post<Todo>(this.rootUrl + node.id, node.toJson());
+  }
+  
   /**
    * create a Todo Object from response
    */

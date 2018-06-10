@@ -31,6 +31,15 @@ export class Todo {
     this._dirty = Pdirty;
   }
   
+  toJson() {
+    return {
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      parentId: this.parentId
+    };
+  }
+  
   appendChild(child: Todo) {
     if (child._parentId != this._id) {
       child._parentId = this._id;
