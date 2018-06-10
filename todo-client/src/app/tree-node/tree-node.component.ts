@@ -85,7 +85,7 @@ export class TreeNodeComponent implements OnInit {
       });
       n.childrenLoaded = true;
       this.open = true;
-      console.log(n.children);
+      //console.log(n.children);
       this.childrenLoaded = true;
     });
   }
@@ -94,7 +94,7 @@ export class TreeNodeComponent implements OnInit {
     // make sure the data is loaded
     if (note.childrenLoaded === false) {
       this.getChildren(note);
-      console.log(event.target);
+      // console.log(event.target);
     }
     
     // this event is handled.

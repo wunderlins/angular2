@@ -32,7 +32,7 @@ export class Todo {
   }
   
   appendChild(child: Todo) {
-    if (child._parentId !== this._id) {
+    if (child._parentId != this._id) {
       child._parentId = this._id;
       child._dirty = true;
     }
@@ -60,4 +60,5 @@ export class Todo {
   set parentId(parentId: number)       {this._parentId = parentId;       this._dirty = true;}
   set children(children: Todo[])       {this._children = children;       this._dirty = true;}
   set numChildren(numChildren: number) {this._numChildren = numChildren; this._dirty = true;}
+  set dirty(state: boolean)            {this._dirty = state; }
 }

@@ -35,7 +35,7 @@ export class NotesComponent implements OnInit {
   public onExpand(note: Todo, event: any): void {
     if (note.childrenLoaded === false) {
       this.getChildren(note);
-      console.log(event.target);
+      //console.log(event.target);
     }
     event.stopPropagation();
   }
@@ -53,8 +53,8 @@ export class NotesComponent implements OnInit {
         n.appendChild(this.notesService.createNote(v));
       });
       n.childrenLoaded = true;
-      console.log(n.children);
-      console.log('node cache length: ' + this.notesService.nodeCache.length);
+      //console.log(n.children);
+      //console.log('node cache length: ' + this.notesService.nodeCache.length);
     });
   }
   
