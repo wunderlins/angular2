@@ -26,9 +26,9 @@ export class NotesComponent implements OnInit {
     this.notes = n.children;
   }
   
-  public onSelect(note: Todo, event: any): void {
+  public onSelect(note: Todo): void {
     this.selected = note;
-    console.log(note.name);
+    console.log("Note: " + note.name);
     console.log(event);
   }
   
@@ -70,6 +70,12 @@ export class NotesComponent implements OnInit {
 
   ngOnInit() {
     this.getRoot();
+    this.notesService.selectedNode.subscribe(
+      n => {
+        //console.log("selectedNode: " + n.name);
+        this.selected = n;
+      }
+    );
   }
 
 }

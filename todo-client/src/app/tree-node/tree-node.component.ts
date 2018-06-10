@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Todo, NodeType } from '../todo';
 import { NotesService } from '../notes.service';
 import { NotesComponent } from '../notes/notes.component';
@@ -14,9 +14,10 @@ export class TreeNodeComponent implements OnInit {
    * multiple times in a module.
    */
   public static selected: Todo = null;
-  public static selectedNode = null;
+  public static selectedDOMNode = null;
   
   @Input() node: Todo;
+  
   public nodeType = NodeType;
   public expanded = false;
   public childrenLoaded = false;
@@ -62,14 +63,14 @@ export class TreeNodeComponent implements OnInit {
     }
     
     if (TreeNodeComponent.selected !== null) {
-      TreeNodeComponent.selectedNode.classList.remove('selected');
-      console.log(TreeNodeComponent.selectedNode.classList);
+      TreeNodeComponent.selectedDOMNode.classList.remove('selected');
     }
     
     t.classList.add('selected');
     TreeNodeComponent.selected = note;
-    TreeNodeComponent.selectedNode = t;
-    //NotesComponent.selected = note;
+    this.notesService.selectedNode.emit(note);
+    // console.log([this.selectedNode, note]);
+    TreeNodeComponent.selectedDOMNode = t;
     event.stopPropagation();
   }
   

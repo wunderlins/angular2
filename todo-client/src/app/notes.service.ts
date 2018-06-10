@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Output, EventEmitter } from '@angular/core';
 import { Todo, NodeType } from './todo';
 import { Observable} from 'rxjs';
 import { of } from 'rxjs/observable/of';
@@ -7,6 +7,7 @@ import { environment } from './../environments/environment';
 
 @Injectable()
 export class NotesService {
+  @Output() selectedNode: EventEmitter<Todo> = new EventEmitter<Todo>();
   
   private rootUrl = environment.apiUrl;
   public nodeCache: Todo[] = [];
