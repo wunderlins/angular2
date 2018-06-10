@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Todo, NodeType } from '../todo';
+import { NotesService } from '../notes.service';
 
 @Component({
   selector: 'app-notes-detail',
@@ -10,9 +11,13 @@ import { Todo, NodeType } from '../todo';
 export class NotesDetailComponent implements OnInit {
   @Input() note: Todo;
   
-  constructor() { }
-
+  constructor(private notesService: NotesService) { }
+  onCancel(id: number) {
+    alert("TBD: reset");
+  }
+  
   ngOnInit() {
+    
   }
 
 }

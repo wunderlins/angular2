@@ -19,7 +19,7 @@ export class NotesService {
   
   public increaseLoading() {
     this._loading++;
-    this.loading.emit(this._loading );
+    this.loading.emit(this._loading);
   }
   
   public decreaseLoading() {
@@ -49,7 +49,7 @@ export class NotesService {
     node.type = v.node_type;
     node.dirty = false;
     this.nodeCache[v.id] = node;
-    return node;
+    return this.nodeCache[v.id];
   }
   
   getParent(node: Todo) {

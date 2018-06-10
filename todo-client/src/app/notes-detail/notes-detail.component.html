@@ -1,9 +1,9 @@
 <div *ngIf="note">
 
-	<div>
+	<!-- div>
 		<label for="id">id</label>
-		<input type="number" id="id" [(ngModel)]="note.id" placeholder="id">
-	</div>
+		<input type="number" id="id" [(ngModel)]="note.id" placeholder="id" readonly>
+	</div -->
 	<div>
 		<label for="name">name</label>
 		<input type="text" id="name" [(ngModel)]="note.name" placeholder="name">
@@ -12,7 +12,7 @@
 		<label for="description">description</label>
 		<textarea id="description" [(ngModel)]="note.description"></textarea>
 	</div>
-	<div>
+	<!-- div>
 		<label for="parentId">parent</label>
 		<input type="number" id="parentId" [(ngModel)]="note.parentId" placeholder="parentId">
 	</div>
@@ -23,15 +23,18 @@
 	<div>
 		<label for="dirty">dirty</label>
 		<input type="checkbox" id="dirty" [(ngModel)]="note.dirty" placeholder="dirty">
-	</div>
+	</div-->
 
 	<div>
 		<label for="ctime">ctime</label> {{ note.ctime | date :'dd.MM.yyyy hh:mm:ss'}}
-		<input type="datetime" id="ctime" [(ngModel)]="note.ctime" placeholder="ctime" readonly>
+		<!--input type="datetime" id="ctime" [(ngModel)]="note.ctime" placeholder="ctime" readonly-->
 	</div>
 	<div>
 		<label for="mtime">mtime</label> {{ note.mtime | date :'dd.MM.yyyy hh:mm:ss'}}
-		<input type="datetime" id="mtime" [(ngModel)]="note.mtime" placeholder="mtime" readonly>
+		<!-- input type="datetime" id="mtime" [(ngModel)]="note.mtime" placeholder="mtime" readonly-->
 	</div>
-
+	<div>
+		<button type="button" (click)="onCancel(note.id)">Cancel</button>
+		<button type="button" [disabled]="!note.dirty">Save</button>
+	</div>
 </div>
