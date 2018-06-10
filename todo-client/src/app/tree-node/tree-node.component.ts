@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { Todo, NodeType } from '../todo';
 import { NotesService } from '../notes.service';
 import { NotesComponent } from '../notes/notes.component';
@@ -80,6 +80,7 @@ export class TreeNodeComponent implements OnInit {
     }
     
     this.notesService.getChildren(n.id).subscribe(notes => {
+      this.notesService.decreaseLoading();
       notes.forEach((v, k) => {
         n.appendChild(this.notesService.createNote(v));
       });

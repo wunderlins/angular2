@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit, AfterViewInit } from '@angular/core';
 import { Todo, NodeType } from '../todo';
 import { NotesService } from '../notes.service';
+import { Observable } from 'rxjs';
 // import { ConsoleComponent } from '../console/console.component';
 
 @Component({
@@ -8,12 +9,14 @@ import { NotesService } from '../notes.service';
   templateUrl: './notes.component.html',
   styleUrls: ['./notes.component.css']
 })
-export class NotesComponent implements OnInit {
+export class NotesComponent implements OnInit, AfterViewInit {
   
+  // @ViewChild('throbber') throbber: ElementRef;
+  
+  loading = 0;
   notes: Todo[] = new Array();
   selected: Todo;
   root: Todo;
-  
   node: Todo;
   
   private dummyData(): void {
@@ -28,8 +31,8 @@ export class NotesComponent implements OnInit {
   
   public onSelect(note: Todo): void {
     this.selected = note;
-    console.log("Note: " + note.name);
-    console.log(event);
+    //console.log("Note: " + note.name);
+    //console.log(event);
   }
   
   public onExpand(note: Todo, event: any): void {
@@ -43,12 +46,29 @@ export class NotesComponent implements OnInit {
   constructor(private notesService: NotesService) {
   }
   
+  ngAfterViewInit() {
+    //this.throbber.nativeElement.style.display = 'none';
+  }
+  
+  ngOnInit() {
+    this.getRoot();
+    this.notesService.selectedNode.subscribe(
+      n => {
+        this.selected = n;
+      }
+    );
+    this.notesService.loading.subscribe((n) => {
+      this.loading = n;
+    });
+  }
+  
   getChildren(n: Todo) {
     if (n.childrenLoaded === true) {
       return;
     }
     
     this.notesService.getChildren(n.id).subscribe(notes => {
+      this.notesService.decreaseLoading();
       notes.forEach((v, k) => {
         n.appendChild(this.notesService.createNote(v));
       });
@@ -59,23 +79,17 @@ export class NotesComponent implements OnInit {
   }
   
   getNode(id: number): void {
-    this.notesService.getNode(id).subscribe(v => this.node = this.notesService.createNote(v));
+    this.notesService.getNode(id).subscribe(v => { 
+      this.node = this.notesService.createNote(v);
+      this.notesService.decreaseLoading();
+    });
   }
   
   getRoot(): void {
-    this.notesService.getNode(0).subscribe(v => 
-      this.root = this.notesService.createNote(v)
-    );
-  }
-
-  ngOnInit() {
-    this.getRoot();
-    this.notesService.selectedNode.subscribe(
-      n => {
-        //console.log("selectedNode: " + n.name);
-        this.selected = n;
-      }
-    );
+    this.notesService.getNode(0).subscribe(v => {
+      this.root = this.notesService.createNote(v);
+      this.notesService.decreaseLoading();
+    });
   }
 
 }

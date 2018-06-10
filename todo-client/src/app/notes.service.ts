@@ -8,19 +8,34 @@ import { environment } from './../environments/environment';
 @Injectable()
 export class NotesService {
   @Output() selectedNode: EventEmitter<Todo> = new EventEmitter<Todo>();
+  @Output() loading: EventEmitter<number> = new EventEmitter<number>(true);
+  private _loading = 0;
   
   private rootUrl = environment.apiUrl;
   public nodeCache: Todo[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
+  
+  public increaseLoading() {
+    this._loading++;
+    this.loading.emit(this._loading );
+  }
+  
+  public decreaseLoading() {
+    this._loading--;
+    this.loading.emit(this._loading);
+  }
   
   getRoot(): Observable<Todo[]> {
     // return of(this.dummyData());
+    this.increaseLoading();
     return this.http.get<Todo[]>(this.rootUrl + '0/children');
   }
   
   // FIXME: create a node with createNode() after result is fetched.
   getNode(id: number): Observable<Todo> {
+    this.increaseLoading();
     return this.http.get<Todo>(this.rootUrl + id);
   }
   
@@ -46,6 +61,7 @@ export class NotesService {
   }
   
   getChildren(id: number): Observable<Todo[]> {
+    this.increaseLoading();
     return this.http.get<Todo[]>(this.rootUrl + id + '/children');
   }
 

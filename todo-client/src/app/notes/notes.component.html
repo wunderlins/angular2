@@ -1,6 +1,8 @@
 <h2>
 	<fa [name]="'book'"></fa>
 	Notes
+	
+	<i *ngIf="loading != 0" class="fa fa-refresh fa-spin" style="font-size:24px" #throbber></i>
 </h2>
 
 <div *ngIf="root">
@@ -8,22 +10,6 @@
 		[node]="root"
 	></app-tree-node>
 </div>
-
-<div *ngIf="root">
-	<!-- ul>
-		<li *ngFor="let note of notes"
-		  class="" 
-		  [class.selected]="note === selected" 
-	      (click)="onSelect(note, $event)">
-	      <button [class.collapsed]="note.numChildren > 0"
-		      (click)="onExpand(note, $event)"
-	      ></button> 
-	      
-	      {{note.name}}, numChildren={{note.numChildren}} 
-	      parent={{note.parentId}}, dirty={{note.dirty}}</li>
-	</ul-->
-</div>
-
 
 <button (click)=getChildren(selected)>getChildren(selected)</button>
 <app-notes-detail [note]="selected"></app-notes-detail>
