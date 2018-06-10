@@ -199,11 +199,14 @@ public class NodeController {
 			throw new NodeException(oid, e.getMessage());
 		}
 		
-		URI location = ServletUriComponentsBuilder
-				.fromCurrentRequest().path("")
-				.buildAndExpand(oid).toUri();
+		//URI location = ServletUriComponentsBuilder
+		//		.fromCurrentRequest().path("")
+		//		.buildAndExpand(oid).toUri();
+		//return ResponseEntity.created(location).build();
 		
-		return ResponseEntity.created(location).build();
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Location", request.getRequestURL().toString() + "/" + n.getId());
+		return new ResponseEntity<Object>(n, headers, HttpStatus.OK);
 	}
     
     /**
