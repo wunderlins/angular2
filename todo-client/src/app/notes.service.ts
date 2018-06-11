@@ -14,7 +14,13 @@ export class NotesService {
   private rootUrl = environment.apiUrl;
   public nodeCache: Todo[] = [];
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient) {}
+  
+  public newNode(type: number): Todo {
+    let n = new Todo(-1, "");
+    n.parentId = 0;
+    n.dirty = true;
+    return n;
   }
   
   public increaseLoading() {

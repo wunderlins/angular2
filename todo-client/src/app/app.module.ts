@@ -10,6 +10,7 @@ import { ConsoleComponent } from './console/console.component';
 import { NotesService } from './notes.service';
 import { NotesDetailComponent } from './notes-detail/notes-detail.component';
 import { TreeNodeComponent } from './tree-node/tree-node.component';
+import { NotesMenuComponent } from './notes-menu/notes-menu.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { TreeNodeComponent } from './tree-node/tree-node.component';
     NotesComponent,
     ConsoleComponent,
     NotesDetailComponent,
-    TreeNodeComponent
+    TreeNodeComponent,
+    NotesMenuComponent
   ],
   imports: [
     BrowserModule,
