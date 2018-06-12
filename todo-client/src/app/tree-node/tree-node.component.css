@@ -27,6 +27,12 @@ button.none {
 	width: 1.5em;
 }
 
+.tree > button:before {
+   color: transparent;
+   -webkit-text-stroke-width: 1px;
+   -webkit-text-stroke-color: black;
+}
+
 .tree > button.none:before {
 	font-family: FontAwesome;
 	content: "\f15b";
