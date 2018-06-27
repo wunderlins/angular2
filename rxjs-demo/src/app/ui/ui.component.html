@@ -1,4 +1,12 @@
 <button #input>I am a button, don't click me!</button> <br />
 <textarea #output style="height: 20em;"></textarea>
 <br><br>
-<button #emitter>i am an event emitter</button>
+<button #emitter>get node</button>
+
+<div>
+	<ul>
+		<li *ngFor="let node of nodes">
+			{{node.id}} {{node.name}}
+		</li>
+	</ul>
+</div>
