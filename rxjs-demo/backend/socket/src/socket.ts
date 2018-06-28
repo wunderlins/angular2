@@ -22,33 +22,40 @@ class handler {
 
 			//send back the message to the other clients
 			wss.clients.forEach(client => {
-				if (client != ws) {
-					client.send(`Hello, broadcast message -> ${message}`);
+				if (client != ws) { // send to other clients
+					client.send(`${ws.id}: ${message}`);
 				}	
 			});
-			ws.send(`Hello, you sent -> ${message}`);
+			ws.send(`${ws.id}: ${message}`);
 			
 		// send message to single client
 		} else {
-			ws.send(`Hello, you sent -> ${message}`);
+			ws.send(`Local: ${message}`);
 		}
 	}
 }
 
-wss.on('connection', (ws: WebSocket) => {
-
+wss.on('connection', (ws: WebSocket, req) => {
+	ws.id = req.headers['sec-websocket-key'];
+	console.log(req.headers['sec-websocket-key']);
+	/*
+	for(let e of Object.getOwnPropertyNames(ws)) {
+		console.log(e);
+	}
+	*/
+	
 	//connection is up, let's add a simple simple event
 	ws.on('message', (message: string) => {
 		handler.message(ws, message);
 	});
 
 	//send immediatly a feedback to the incoming connection	
-	ws.send('ACK');
+	ws.send(ws.id);
 });
 
 //start our server
 server.listen(process.env.PORT || port, () => {
-	console.log(`Server started on port ${server.address().port}.`);
+	console.log(`Server started on port ` + String(server.address().port));
 	console.log(`Use different port by setting the environment variable PORT`);
 	console.log(`$ export PORT=4800 # before starting the server`);
 }); 
