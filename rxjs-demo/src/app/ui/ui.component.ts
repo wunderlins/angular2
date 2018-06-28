@@ -56,7 +56,7 @@ export class UiComponent implements OnInit, AfterViewInit {
   
 	displayInteger(i) {
 		let ret = Math.round(i); 
-		console.log(i + " " + ret);
+		//console.log(i + " " + ret);
 		return ret;
 	}
   
